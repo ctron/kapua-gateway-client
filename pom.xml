@@ -12,7 +12,7 @@
 
 	<name>Eclipse Kapua :: Gateway Client SDK</name>
 	<description>A gateway client SDK for Eclipse Kapua™</description>
-	<url>https://dentrassi.de/kapua-gateway-client</url>
+	<url>https://github.com/ctron/kapua-gateway-client</url>
 
 	<inceptionYear>2017</inceptionYear>
 
