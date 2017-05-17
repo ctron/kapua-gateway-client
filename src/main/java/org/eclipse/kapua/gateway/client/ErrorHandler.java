@@ -16,14 +16,5 @@ import java.util.Optional;
 @FunctionalInterface
 public interface ErrorHandler<X extends Throwable> {
 
-    public void handleError(Throwable e, Optional<Payload> message) throws X;
-
-    public static ErrorHandler<RuntimeException> ignore() {
-        return new ErrorHandler<RuntimeException>() {
-
-            @Override
-            public void handleError(final Throwable e, final Optional<Payload> payload) throws RuntimeException {
-            }
-        };
-    }
+    public void handleError(Throwable e, Optional<Payload> payload) throws X;
 }

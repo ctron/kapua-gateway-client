@@ -12,6 +12,7 @@
 package org.eclipse.kapua.gateway.client;
 
 import static org.eclipse.kapua.gateway.client.Credentials.userAndPassword;
+import static org.eclipse.kapua.gateway.client.Errors.handle;
 import static org.eclipse.kapua.gateway.client.Errors.ignore;
 import static org.eclipse.kapua.gateway.client.Transport.waitForConnection;
 
@@ -31,21 +32,20 @@ public class KuraExample {
                 .credentials(userAndPassword("kapua-broker", "kapua-password"))
                 .build()) {
 
-
             try (final Application application = client.buildApplication("app1").build()) {
 
                 // wait for connection
-                
+
                 waitForConnection(application.transport());
 
                 // subscribe to a topic
-                
+
                 application.data(Topic.of("my", "topic")).subscribe(message -> {
                     System.out.format("Received: %s%n", message);
                 });
 
-                // example payload 
-                
+                // example payload
+
                 final Payload.Builder payload = new Payload.Builder();
                 payload.put("foo", "bar");
                 payload.put("a", 1);
@@ -58,17 +58,17 @@ public class KuraExample {
                 }
 
                 // send, with attached error handler
-                
-                application.data(Topic.of("my", "topic")).errors((e, message) -> {
-                    System.err.println("Failed to publish: " + e.getMessage());
-                }).send(payload);
 
-                // ignoring error 
-                
+                application.data(Topic.of("my", "topic"))
+                        .errors(handle((e, message) -> System.err.println("Failed to publish: " + e.getMessage())))
+                        .send(payload);
+
+                // ignoring error
+
                 application.data(Topic.of("my", "topic")).errors(ignore()).send(payload);
 
                 // cache sender instance
-                
+
                 final Sender<RuntimeException> sender = application.data(Topic.of("my", "topic")).errors(ignore());
 
                 int i = 0;

@@ -12,6 +12,7 @@
 package org.eclipse.kapua.gateway.client;
 
 import java.util.Optional;
+import java.util.function.BiConsumer;
 
 public final class Errors {
 
@@ -22,6 +23,16 @@ public final class Errors {
 
     public static ErrorHandler<RuntimeException> ignore() {
         return IGNORE;
+    }
+    
+    public static ErrorHandler<RuntimeException> handle(BiConsumer<Throwable, Optional<Payload>> handler) {
+        return new ErrorHandler<RuntimeException>() {
+            
+            @Override
+            public void handleError(Throwable e, Optional<Payload> payload) throws RuntimeException {
+                handler.accept(e, payload);
+            }
+        };
     }
 
     public static void ignore(final Throwable e, final Optional<Payload> payload) {
