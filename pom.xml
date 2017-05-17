@@ -226,6 +226,9 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<excludePackageNames>org.eclipse.kapua.gateway.client.kura.payload</excludePackageNames>
+				</configuration>
 			</plugin>
 
 			<plugin>
