@@ -25,18 +25,17 @@ import java.util.function.Supplier;
 
 import org.eclipse.kapua.gateway.client.Application;
 import org.eclipse.kapua.gateway.client.BinaryPayloadCodec;
+import org.eclipse.kapua.gateway.client.Credentials.UserAndPassword;
 import org.eclipse.kapua.gateway.client.Data;
 import org.eclipse.kapua.gateway.client.Module;
 import org.eclipse.kapua.gateway.client.Topic;
 import org.eclipse.kapua.gateway.client.Transport;
-import org.eclipse.kapua.gateway.client.Credentials.UserAndPassword;
 import org.eclipse.kapua.gateway.client.internal.Buffers;
 import org.eclipse.kapua.gateway.client.internal.TransportAsync;
 import org.eclipse.kapua.gateway.client.mqtt.MqttClient;
 import org.eclipse.kapua.gateway.client.mqtt.MqttNamespace;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -162,9 +161,6 @@ public class PahoClient extends MqttClient {
     private static MqttConnectOptions createConnectOptions(final Builder builder) {
         final MqttConnectOptions result = new MqttConnectOptions();
 
-        // we need to handle re-connect ourselves in order to get proper events
-        result.setAutomaticReconnect(false);
-
         final Object credentials = builder.credentials();
         if (credentials instanceof UserAndPassword) {
             final UserAndPassword userAndPassword = (UserAndPassword) credentials;
@@ -186,7 +182,7 @@ public class PahoClient extends MqttClient {
     private MqttAsyncClient client;
 
     private final Map<String, PahoApplication> applications = new HashMap<>();
-    private final Map<String, IMqttMessageListener> subscriptions = new HashMap<>();
+    private final Map<String, PahoMessageHandler> subscriptions = new HashMap<>();
 
     private PahoClient(final Set<Module> modules, final String clientId, final ScheduledExecutorService executor, final MqttNamespace namespace, final BinaryPayloadCodec codec,
             final MqttAsyncClient client,
@@ -204,6 +200,7 @@ public class PahoClient extends MqttClient {
 
             @Override
             public void messageArrived(final String topic, final MqttMessage message) throws Exception {
+                handleMessageArrived(topic, message);
             }
 
             @Override
@@ -279,9 +276,9 @@ public class PahoClient extends MqttClient {
     }
 
     private void handleResubscribe() {
-        for (final Map.Entry<String, IMqttMessageListener> entry : this.subscriptions.entrySet()) {
+        for (final Map.Entry<String, PahoMessageHandler> entry : this.subscriptions.entrySet()) {
             try {
-                this.client.subscribe(entry.getKey(), 1, null, null, entry.getValue());
+                internalSubscribe(entry.getKey());
             } catch (final MqttException e) {
                 logger.warn("Failed to re-subscribe to '{}'", entry.getKey());
             }
@@ -339,11 +336,22 @@ public class PahoClient extends MqttClient {
         publish(topic, payload);
     }
 
-    IMqttToken subscribe(final String topic, final IMqttMessageListener messageListener) throws MqttException {
+    IMqttToken subscribe(final String topic, final PahoMessageHandler messageListener) throws MqttException {
         synchronized (this) {
             this.subscriptions.put(topic, messageListener);
-            return this.client.subscribe(topic, 1, null, null, messageListener);
+            return internalSubscribe(topic);
         }
+    }
+
+    protected void handleMessageArrived(final String topic, final MqttMessage message) throws Exception {
+        final PahoMessageHandler handler = this.subscriptions.get(topic);
+        if (handler != null) {
+            handler.handleMessage(topic, message);
+        }
+    }
+
+    private IMqttToken internalSubscribe(final String topic) throws MqttException {
+        return this.client.subscribe(topic, 1);
     }
 
 }

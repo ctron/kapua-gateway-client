@@ -21,7 +21,6 @@ import org.eclipse.kapua.gateway.client.MessageHandler;
 import org.eclipse.kapua.gateway.client.Payload;
 import org.eclipse.kapua.gateway.client.Topic;
 import org.eclipse.kapua.gateway.client.mqtt.MqttNamespace;
-import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.slf4j.Logger;
@@ -62,13 +61,13 @@ final class PahoData implements Data {
 
         logger.debug("Setting subscription for: {}", this.topic);
 
-        final IMqttToken token = this.client.subscribe(this.topic, new IMqttMessageListener() {
+        final IMqttToken token = this.client.subscribe(this.topic, new PahoMessageHandler() {
 
             @Override
-            public void messageArrived(final String topic, final MqttMessage message) throws Exception {
+            public void handleMessage(final String topic, final MqttMessage message) throws Exception {
                 logger.debug("Received message for: {}", topic);
                 try {
-                    handleMessage(handler, message);
+                    PahoData.this.handleMessage(handler, message);
                 } catch (final Exception e) {
                     try {
                         errorHandler.handleError(e, null);
