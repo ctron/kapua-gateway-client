@@ -22,9 +22,9 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.eclipse.kapua.gateway.client.Client;
+import org.eclipse.kapua.gateway.client.Module;
+import org.eclipse.kapua.gateway.client.ModuleContext;
 import org.eclipse.kapua.gateway.client.internal.Metrics;
-import org.eclipse.kapua.gateway.client.internal.Module;
-import org.eclipse.kapua.gateway.client.internal.ModuleContext;
 import org.eclipse.kapua.gateway.client.kura.payload.KuraPayloadProto.KuraPayload;
 import org.eclipse.kapua.gateway.client.mqtt.MqttClient;
 import org.slf4j.Logger;

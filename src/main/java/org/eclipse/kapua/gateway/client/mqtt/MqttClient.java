@@ -15,10 +15,10 @@ import java.nio.ByteBuffer;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 
+import org.eclipse.kapua.gateway.client.AbstractClient;
 import org.eclipse.kapua.gateway.client.BinaryPayloadCodec;
+import org.eclipse.kapua.gateway.client.Module;
 import org.eclipse.kapua.gateway.client.Credentials.UserAndPassword;
-import org.eclipse.kapua.gateway.client.internal.AbstractClient;
-import org.eclipse.kapua.gateway.client.internal.Module;
 
 public abstract class MqttClient extends AbstractClient {
 

@@ -9,9 +9,7 @@
  * Contributors:
  *     Red Hat Inc - initial API and implementation
  *******************************************************************************/
-package org.eclipse.kapua.gateway.client.internal;
-
-import org.eclipse.kapua.gateway.client.Client;
+package org.eclipse.kapua.gateway.client;
 
 public interface ModuleContext {
 

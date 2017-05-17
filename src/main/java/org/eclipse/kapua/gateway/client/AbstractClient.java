@@ -9,7 +9,7 @@
  * Contributors:
  *     Red Hat Inc - initial API and implementation
  *******************************************************************************/
-package org.eclipse.kapua.gateway.client.internal;
+package org.eclipse.kapua.gateway.client;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -17,8 +17,7 @@ import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 
-import org.eclipse.kapua.gateway.client.Client;
-import org.eclipse.kapua.gateway.client.Transport;
+import org.eclipse.kapua.gateway.client.internal.TransportAsync;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
