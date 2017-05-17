@@ -6,7 +6,7 @@
 
 	<groupId>de.dentrassi.kapua</groupId>
 	<artifactId>kapua-gateway-client</artifactId>
-	<version>0.1.0</version>
+	<version>0.1.1-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 
 	<name>Eclipse Kapua :: Gateway Client SDK</name>
@@ -37,7 +37,7 @@
 		<url>https://github.com/ctron/kapua-gateway-client</url>
 		<connection>scm:git:git://github.com/ctron/kapua-gateway-client.git</connection>
 		<developerConnection>scm:git:git@github.com:ctron/kapua-gateway-client.git</developerConnection>
-	  <tag>kapua-gateway-client-0.1.0</tag>
+	  <tag>HEAD</tag>
   </scm>
 
 	<issueManagement>
