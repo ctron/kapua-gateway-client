@@ -1,4 +1,4 @@
-# Eclipse Kapua™ Gateway Client SDK [![Build status](https://api.travis-ci.org/ctron/kapua-gateway-client.svg)](https://travis-ci.org/ctron/kapua-gateway-client) ![Maven Central](https://img.shields.io/maven-central/v/de.dentrassi.kapua/kapua-gateway-client.svg "Maven Central Status")
+# Eclipse Kapua™ Gateway Client SDK [![Build status](https://api.travis-ci.org/ctron/kapua-gateway-client.svg)](https://travis-ci.org/ctron/kapua-gateway-client) [![Maven Central](https://img.shields.io/maven-central/v/de.dentrassi.kapua/kapua-gateway-client.svg "Maven Central Status")](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22de.dentrassi.kapua%22)
 
 This project provides an SDK for connecting to [Eclipse Kapua](https://eclipse.org/kapua)  as a gateway.
 
