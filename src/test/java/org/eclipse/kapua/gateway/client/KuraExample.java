@@ -27,6 +27,7 @@ public class KuraExample {
     public static void main(final String[] args) throws Exception {
 
         try (final Client client = new KuraMqttProfile()
+                .accountName("kapua-sys")
                 .clientId("foo-bar-1")
                 .brokerUrl("tcp://localhost:1883")
                 .credentials(userAndPassword("kapua-broker", "kapua-password"))
