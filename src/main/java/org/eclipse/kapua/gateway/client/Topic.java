@@ -47,13 +47,26 @@ public final class Topic {
         }
 
         if (strings == null || strings.length <= 0) {
-            return new Topic(Collections.singletonList(first));
+            return new Topic(Collections.singletonList(ensureNotSpecial(first)));
         }
 
         final List<String> segments = new ArrayList<>(1 + strings.length);
-        segments.add(first);
-        segments.addAll(Arrays.asList(strings));
+        segments.add(ensureNotSpecial(first));
+        for (final String segment : strings) {
+            segments.add(ensureNotSpecial(segment));
+        }
         return new Topic(segments);
+    }
+
+    private static String ensureNotSpecial(final String segment) {
+        if ("#".equals(segment)) {
+            throw new IllegalArgumentException("Wildcard topics are not allowed");
+        } else if ("+".equals(segment)) {
+            throw new IllegalArgumentException("Wildcard topics are not allowed");
+        } else if (segment.contains("/")) {
+            throw new IllegalArgumentException("Segments must not contain slashes. Use Topic.split to parse a multi-segment topic string.");
+        }
+        return segment;
     }
 
 }
