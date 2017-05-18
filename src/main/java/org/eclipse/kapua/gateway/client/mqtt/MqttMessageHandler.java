@@ -9,10 +9,10 @@
  * Contributors:
  *     Red Hat Inc - initial API and implementation
  *******************************************************************************/
-package org.eclipse.kapua.gateway.client.mqtt.fuse;
+package org.eclipse.kapua.gateway.client.mqtt;
 
-import org.fusesource.hawtbuf.Buffer;
+import java.nio.ByteBuffer;
 
-public interface FuseMessageHandler {
-    public void handleMessage ( String topic, Buffer payload ) throws Exception;
+public interface MqttMessageHandler {
+    public void handleMessage ( String topic, ByteBuffer payload ) throws Exception;
 }

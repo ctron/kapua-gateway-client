@@ -9,10 +9,16 @@
  * Contributors:
  *     Red Hat Inc - initial API and implementation
  *******************************************************************************/
-package org.eclipse.kapua.gateway.client.mqtt.paho;
+package org.eclipse.kapua.gateway.client.mqtt;
 
-import org.eclipse.paho.client.mqttv3.MqttMessage;
+import java.nio.ByteBuffer;
+import java.util.concurrent.Future;
 
-public interface PahoMessageHandler {
-    public void handleMessage ( String topic, MqttMessage message ) throws Exception;
+
+public interface MqttConnection {
+
+    public void publish(String topic, ByteBuffer buffer) throws Exception;
+
+    public Future<?> subscribe(String topic, MqttMessageHandler messageHandler) throws Exception;
+
 }

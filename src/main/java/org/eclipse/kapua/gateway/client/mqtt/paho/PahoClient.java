@@ -17,7 +17,9 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
@@ -31,7 +33,11 @@ import org.eclipse.kapua.gateway.client.Module;
 import org.eclipse.kapua.gateway.client.Topic;
 import org.eclipse.kapua.gateway.client.Transport;
 import org.eclipse.kapua.gateway.client.mqtt.MqttClient;
+import org.eclipse.kapua.gateway.client.mqtt.MqttConnection;
+import org.eclipse.kapua.gateway.client.mqtt.MqttData;
+import org.eclipse.kapua.gateway.client.mqtt.MqttMessageHandler;
 import org.eclipse.kapua.gateway.client.mqtt.MqttNamespace;
+import org.eclipse.kapua.gateway.client.mqtt.paho.internal.Listeners;
 import org.eclipse.kapua.gateway.client.utils.Buffers;
 import org.eclipse.kapua.gateway.client.utils.TransportAsync;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -68,7 +74,7 @@ public class PahoClient extends MqttClient {
 
         @Override
         public Data data(final Topic topic) {
-            return new PahoData(PahoClient.this, PahoClient.this.namespace, PahoClient.this.codec, PahoClient.this.clientId, this.applicationId, topic);
+            return new MqttData(PahoClient.this.asConnection(), PahoClient.this.namespace, PahoClient.this.codec, PahoClient.this.clientId, this.applicationId, topic);
         }
 
         @Override
@@ -148,6 +154,21 @@ public class PahoClient extends MqttClient {
         return string;
     }
 
+    public MqttConnection asConnection() {
+        return new MqttConnection() {
+
+            @Override
+            public Future<?> subscribe(String topic, MqttMessageHandler messageHandler) throws MqttException {
+                return PahoClient.this.subscribe(topic, messageHandler);
+            }
+
+            @Override
+            public void publish(String topic, ByteBuffer buffer) throws MqttException {
+                PahoClient.this.publish(topic, buffer);
+            }
+        };
+    }
+
     public static ScheduledExecutorService createExecutor(final String clientId) {
         return Executors.newSingleThreadScheduledExecutor(new ThreadFactory() {
 
@@ -182,7 +203,7 @@ public class PahoClient extends MqttClient {
     private MqttAsyncClient client;
 
     private final Map<String, PahoApplication> applications = new HashMap<>();
-    private final Map<String, PahoMessageHandler> subscriptions = new HashMap<>();
+    private final Map<String, MqttMessageHandler> subscriptions = new HashMap<>();
 
     private PahoClient(final Set<Module> modules, final String clientId, final ScheduledExecutorService executor, final MqttNamespace namespace, final BinaryPayloadCodec codec,
             final MqttAsyncClient client,
@@ -276,7 +297,7 @@ public class PahoClient extends MqttClient {
     }
 
     private void handleResubscribe() {
-        for (final Map.Entry<String, PahoMessageHandler> entry : this.subscriptions.entrySet()) {
+        for (final Map.Entry<String, MqttMessageHandler> entry : this.subscriptions.entrySet()) {
             try {
                 internalSubscribe(entry.getKey());
             } catch (final MqttException e) {
@@ -325,7 +346,7 @@ public class PahoClient extends MqttClient {
         }
     }
 
-    void publish(final String topic, final ByteBuffer payload) throws MqttException {
+    protected void publish(final String topic, final ByteBuffer payload) throws MqttException {
         // FIXME: try to optimize, remove buffer copy
 
         this.client.publish(topic, Buffers.toByteArray(payload), 1, false);
@@ -336,7 +357,7 @@ public class PahoClient extends MqttClient {
         publish(topic, payload);
     }
 
-    IMqttToken subscribe(final String topic, final PahoMessageHandler messageListener) throws MqttException {
+    protected Future<?> subscribe(final String topic, final MqttMessageHandler messageListener) throws MqttException {
         synchronized (this) {
             this.subscriptions.put(topic, messageListener);
             return internalSubscribe(topic);
@@ -344,14 +365,16 @@ public class PahoClient extends MqttClient {
     }
 
     protected void handleMessageArrived(final String topic, final MqttMessage message) throws Exception {
-        final PahoMessageHandler handler = this.subscriptions.get(topic);
+        final MqttMessageHandler handler = this.subscriptions.get(topic);
         if (handler != null) {
-            handler.handleMessage(topic, message);
+            handler.handleMessage(topic, Buffers.wrap(message.getPayload()));
         }
     }
 
-    private IMqttToken internalSubscribe(final String topic) throws MqttException {
-        return this.client.subscribe(topic, 1);
+    private Future<?> internalSubscribe(final String topic) throws MqttException {
+        final CompletableFuture<?> future = new CompletableFuture<> ();
+        this.client.subscribe(topic, 1, null, Listeners.toListener(future));
+        return future;
     }
 
 }

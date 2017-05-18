@@ -18,7 +18,9 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 
 import org.eclipse.kapua.gateway.client.Application;
@@ -29,15 +31,17 @@ import org.eclipse.kapua.gateway.client.Module;
 import org.eclipse.kapua.gateway.client.Topic;
 import org.eclipse.kapua.gateway.client.Transport;
 import org.eclipse.kapua.gateway.client.mqtt.MqttClient;
+import org.eclipse.kapua.gateway.client.mqtt.MqttConnection;
+import org.eclipse.kapua.gateway.client.mqtt.MqttData;
+import org.eclipse.kapua.gateway.client.mqtt.MqttMessageHandler;
 import org.eclipse.kapua.gateway.client.mqtt.MqttNamespace;
+import org.eclipse.kapua.gateway.client.mqtt.fuse.internal.Callbacks;
 import org.eclipse.kapua.gateway.client.utils.TransportAsync;
-import org.eclipse.paho.client.mqttv3.MqttException;
 import org.fusesource.hawtbuf.Buffer;
 import org.fusesource.hawtbuf.UTF8Buffer;
 import org.fusesource.mqtt.client.Callback;
 import org.fusesource.mqtt.client.CallbackConnection;
 import org.fusesource.mqtt.client.ExtendedListener;
-import org.fusesource.mqtt.client.Future;
 import org.fusesource.mqtt.client.MQTT;
 import org.fusesource.mqtt.client.Promise;
 import org.fusesource.mqtt.client.QoS;
@@ -65,7 +69,7 @@ public class FuseClient extends MqttClient {
 
         @Override
         public Data data(final Topic topic) {
-            return new FuseData(FuseClient.this, FuseClient.this.namespace, FuseClient.this.codec, FuseClient.this.clientId, this.applicationId, topic);
+            return new MqttData(FuseClient.this.asConnection(), FuseClient.this.namespace, FuseClient.this.codec, FuseClient.this.clientId, this.applicationId, topic);
         }
 
         @Override
@@ -139,6 +143,21 @@ public class FuseClient extends MqttClient {
         return string;
     }
 
+    public MqttConnection asConnection() {
+        return new MqttConnection() {
+
+            @Override
+            public Future<?> subscribe(final String topic, final MqttMessageHandler messageHandler) {
+                return FuseClient.this.subscribe(topic, messageHandler);
+            }
+
+            @Override
+            public void publish(final String topic, final ByteBuffer buffer) {
+                FuseClient.this.publish(topic, buffer);
+            }
+        };
+    }
+
     public static ScheduledExecutorService createExecutor(final String clientId) {
         return Executors.newSingleThreadScheduledExecutor(r -> new Thread(r, clientId));
     }
@@ -188,7 +207,7 @@ public class FuseClient extends MqttClient {
 
     private final Map<String, FuseApplication> applications = new HashMap<>();
 
-    private final Map<String, FuseMessageHandler> subscriptions = new HashMap<>();
+    private final Map<String, MqttMessageHandler> subscriptions = new HashMap<>();
 
     private FuseClient(final Set<Module> modules, final String clientId, final ScheduledExecutorService executor, final MqttNamespace namespace, final BinaryPayloadCodec codec,
             final CallbackConnection connection) {
@@ -212,7 +231,7 @@ public class FuseClient extends MqttClient {
 
     protected void handleConnected() {
         logger.debug("Connected");
-        
+
         notifyConnected();
         synchronized (this) {
             this.applications.values().stream().forEach(app -> app.transport.handleConnected());
@@ -221,7 +240,7 @@ public class FuseClient extends MqttClient {
 
     protected void handleDisconnected() {
         logger.debug("Disconnected");
-        
+
         notifyDisconnected();
         synchronized (this) {
             this.applications.values().stream().forEach(app -> app.transport.handleDisconnected());
@@ -257,7 +276,7 @@ public class FuseClient extends MqttClient {
         }
     }
 
-    void publish(final String topic, final ByteBuffer payload) throws MqttException {
+    protected void publish(final String topic, final ByteBuffer payload) {
         this.connection.publish(Buffer.utf8(topic), new Buffer(payload), QoS.AT_LEAST_ONCE, false, null);
     }
 
@@ -266,24 +285,24 @@ public class FuseClient extends MqttClient {
         publish(topic, payload);
     }
 
-    Future<?> subscribe(final String topic, final FuseMessageHandler messageListener) throws MqttException {
+    protected Future<?> subscribe(final String topic, final MqttMessageHandler messageListener) {
         synchronized (this) {
             this.subscriptions.put(topic, messageListener);
 
-            final Promise<byte[]> promise = new Promise<>();
+            CompletableFuture<byte[]> future = new CompletableFuture<>();
             connection.subscribe(new org.fusesource.mqtt.client.Topic[] {
                     new org.fusesource.mqtt.client.Topic(topic, QoS.AT_LEAST_ONCE)
-            }, promise);
+            }, Callbacks.asCallback(future));
 
-            return promise;
+            return future;
         }
     }
 
     protected void handleMessageArrived(final String topic, final Buffer payload, final Callback<Callback<Void>> ack) {
-        final FuseMessageHandler handler = this.subscriptions.get(topic);
+        final MqttMessageHandler handler = this.subscriptions.get(topic);
         if (handler != null) {
             try {
-                handler.handleMessage(topic, payload);
+                handler.handleMessage(topic, payload.toByteBuffer());
                 ack.onSuccess(null);
             } catch (Exception e) {
                 ack.onFailure(e);
