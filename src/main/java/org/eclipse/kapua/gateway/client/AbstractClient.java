@@ -17,7 +17,7 @@ import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 
-import org.eclipse.kapua.gateway.client.internal.TransportAsync;
+import org.eclipse.kapua.gateway.client.utils.TransportAsync;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

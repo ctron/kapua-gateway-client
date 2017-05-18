@@ -17,10 +17,10 @@ import java.util.Map;
 
 import org.eclipse.kapua.gateway.client.BinaryPayloadCodec;
 import org.eclipse.kapua.gateway.client.Payload;
-import org.eclipse.kapua.gateway.client.internal.Buffers;
-import org.eclipse.kapua.gateway.client.internal.Metrics;
 import org.eclipse.kapua.gateway.client.kura.payload.KuraPayloadProto;
 import org.eclipse.kapua.gateway.client.kura.payload.KuraPayloadProto.KuraPayload;
+import org.eclipse.kapua.gateway.client.utils.Buffers;
+import org.eclipse.kapua.gateway.client.utils.Metrics;
 
 public class KuraBinaryPayloadCodec implements BinaryPayloadCodec {
 
