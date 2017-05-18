@@ -11,8 +11,9 @@
  *******************************************************************************/
 package org.eclipse.kapua.gateway.client.mqtt;
 
+import static java.util.Objects.requireNonNull;
+
 import java.nio.ByteBuffer;
-import java.util.Objects;
 import java.util.concurrent.Future;
 
 import org.eclipse.kapua.gateway.client.BinaryPayloadCodec;
@@ -37,7 +38,7 @@ public class MqttData implements Data {
         this.codec = codec;
         this.topic = namespace.dataTopic(clientId, applicationId, topic);
     }
-    
+
     @Override
     public void send(Payload payload) throws Exception {
         logger.debug("Publishing values - {} -> {}", this.topic, payload.getValues());
@@ -50,11 +51,11 @@ public class MqttData implements Data {
 
     @Override
     public void subscribe(MessageHandler handler, ErrorHandler<? extends Throwable> errorHandler) throws Exception {
-        Objects.requireNonNull(handler);
+        requireNonNull(handler);
 
         logger.debug("Setting subscription for: {}", this.topic);
 
-        Future<?> future = this.connection.subscribe(this.topic, new MqttMessageHandler() {
+        final Future<?> future = this.connection.subscribe(this.topic, new MqttMessageHandler() {
 
             @Override
             public void handleMessage(final String topic, final ByteBuffer payload) throws Exception {

@@ -14,7 +14,6 @@ package org.eclipse.kapua.gateway.client.mqtt;
 import java.nio.ByteBuffer;
 import java.util.concurrent.Future;
 
-
 public interface MqttConnection {
 
     public void publish(String topic, ByteBuffer buffer) throws Exception;

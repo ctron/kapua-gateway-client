@@ -372,7 +372,7 @@ public class PahoClient extends MqttClient {
     }
 
     private Future<?> internalSubscribe(final String topic) throws MqttException {
-        final CompletableFuture<?> future = new CompletableFuture<> ();
+        final CompletableFuture<?> future = new CompletableFuture<>();
         this.client.subscribe(topic, 1, null, Listeners.toListener(future));
         return future;
     }

@@ -24,10 +24,10 @@ public final class Errors {
     public static ErrorHandler<RuntimeException> ignore() {
         return IGNORE;
     }
-    
+
     public static ErrorHandler<RuntimeException> handle(BiConsumer<Throwable, Optional<Payload>> handler) {
         return new ErrorHandler<RuntimeException>() {
-            
+
             @Override
             public void handleError(Throwable e, Optional<Payload> payload) throws RuntimeException {
                 handler.accept(e, payload);

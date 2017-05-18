@@ -28,8 +28,8 @@ public class KuraFuseMqttProfile {
     private String brokerUrl;
     private String clientId;
     private UserAndPassword userAndPassword;
-    
-    private KuraFuseMqttProfile () {
+
+    private KuraFuseMqttProfile() {
     }
 
     public KuraFuseMqttProfile accountName(final String accountName) {

@@ -48,8 +48,6 @@ public final class Metrics {
         }
     }
 
-
-
     public static void buildBody(final KuraPayload.Builder builder, final ByteBuffer body) {
         if (body == null) {
             return;

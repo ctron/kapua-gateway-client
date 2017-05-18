@@ -14,5 +14,6 @@ package org.eclipse.kapua.gateway.client.mqtt;
 import java.nio.ByteBuffer;
 
 public interface MqttMessageHandler {
-    public void handleMessage ( String topic, ByteBuffer payload ) throws Exception;
+
+    public void handleMessage(String topic, ByteBuffer payload) throws Exception;
 }
