@@ -16,7 +16,7 @@ import static org.eclipse.kapua.gateway.client.Errors.handle;
 import static org.eclipse.kapua.gateway.client.Errors.ignore;
 import static org.eclipse.kapua.gateway.client.Transport.waitForConnection;
 
-import org.eclipse.kapua.gateway.client.profile.KuraMqttProfile;
+import org.eclipse.kapua.gateway.client.profile.KuraFuseMqttProfile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +26,7 @@ public class KuraExample {
 
     public static void main(final String[] args) throws Exception {
 
-        try (final Client client = KuraMqttProfile.newProfile()
+        try (final Client client = KuraFuseMqttProfile.newProfile()
                 .accountName("kapua-sys")
                 .clientId("foo-bar-1")
                 .brokerUrl("tcp://localhost:1883")

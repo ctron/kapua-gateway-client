@@ -33,6 +33,10 @@ public final class Credentials {
         public char[] getPassword() {
             return this.password;
         }
+        
+        public String getPasswordAsString() {
+            return String.valueOf(password);
+        }
     }
 
     public static UserAndPassword userAndPassword(final String username, final String password) {
