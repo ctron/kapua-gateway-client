@@ -206,9 +206,8 @@ public class PahoClient extends MqttClient {
     private final Map<String, MqttMessageHandler> subscriptions = new HashMap<>();
 
     private PahoClient(final Set<Module> modules, final String clientId, final ScheduledExecutorService executor, final MqttNamespace namespace, final BinaryPayloadCodec codec,
-            final MqttAsyncClient client,
-            final MqttClientPersistence persistence,
-            final MqttConnectOptions connectOptions) {
+            final MqttAsyncClient client, final MqttClientPersistence persistence, final MqttConnectOptions connectOptions) {
+
         super(executor, clientId, modules);
 
         this.clientId = clientId;
