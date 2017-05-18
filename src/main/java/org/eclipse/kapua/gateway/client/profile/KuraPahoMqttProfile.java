@@ -18,10 +18,10 @@ import org.eclipse.kapua.gateway.client.kura.KuraBirthCertificateModule;
 import org.eclipse.kapua.gateway.client.kura.KuraNamespace;
 import org.eclipse.kapua.gateway.client.mqtt.paho.PahoClient;
 
-public class KuraMqttProfile {
+public class KuraPahoMqttProfile {
 
-    public static KuraMqttProfile newProfile() {
-        return new KuraMqttProfile();
+    public static KuraPahoMqttProfile newProfile() {
+        return new KuraPahoMqttProfile();
     }
 
     private String accountName;
@@ -29,25 +29,25 @@ public class KuraMqttProfile {
     private String clientId;
     private UserAndPassword userAndPassword;
 
-    private KuraMqttProfile() {
+    private KuraPahoMqttProfile() {
     }
 
-    public KuraMqttProfile accountName(final String accountName) {
+    public KuraPahoMqttProfile accountName(final String accountName) {
         this.accountName = accountName;
         return this;
     }
 
-    public KuraMqttProfile brokerUrl(final String brokerUrl) {
+    public KuraPahoMqttProfile brokerUrl(final String brokerUrl) {
         this.brokerUrl = brokerUrl;
         return this;
     }
 
-    public KuraMqttProfile clientId(final String clientId) {
+    public KuraPahoMqttProfile clientId(final String clientId) {
         this.clientId = clientId;
         return this;
     }
 
-    public KuraMqttProfile credentials(final UserAndPassword userAndPassword) {
+    public KuraPahoMqttProfile credentials(final UserAndPassword userAndPassword) {
         this.userAndPassword = userAndPassword;
         return this;
     }
