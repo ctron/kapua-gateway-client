@@ -26,11 +26,46 @@ public final class Topic {
     }
 
     public List<String> getSegments() {
-        return this.segments;
+        return segments;
     }
 
     public Stream<String> stream() {
-        return this.segments.stream();
+        return segments.stream();
+    }
+
+    @Override
+    public String toString() {
+        return String.join("/", segments);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (segments == null ? 0 : segments.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Topic other = (Topic) obj;
+        if (segments == null) {
+            if (other.segments != null) {
+                return false;
+            }
+        } else if (!segments.equals(other.segments)) {
+            return false;
+        }
+        return true;
     }
 
     public static Topic split(final String path) {
