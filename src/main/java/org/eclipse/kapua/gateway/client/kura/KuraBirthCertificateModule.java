@@ -170,7 +170,7 @@ public class KuraBirthCertificateModule implements Module {
         final String clientId = this.client.getMqttClientId();
 
         try {
-            this.client.publishMqttPayload(String.format("$EDC/%s/%s/MQTT/BIRTH", this.accountName, clientId), buffer);
+            this.client.publishMqtt(String.format("$EDC/%s/%s/MQTT/BIRTH", this.accountName, clientId), buffer);
         } catch (final Exception e) {
             logger.warn("Failed to publish birth certificate", e);
         }

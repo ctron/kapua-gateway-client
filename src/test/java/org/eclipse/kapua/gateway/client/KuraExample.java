@@ -73,16 +73,18 @@ public class KuraExample {
                 final Sender<RuntimeException> sender = application.data(Topic.of("my", "topic")).errors(ignore());
 
                 int i = 0;
-                while (true) {
+                while (i < 10) {
                     // send
                     sender.send(Payload.of("counter", i++));
-                    Thread.sleep(1000);
+                    Thread.sleep(1_000);
                 }
 
                 // sleep to not run into Paho thread starvation
                 // Thread.sleep(100_000);
             }
 
+            Thread.sleep(1_000);
+            
         }
     }
 }

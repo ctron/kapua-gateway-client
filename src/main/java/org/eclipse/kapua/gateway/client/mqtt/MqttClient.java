@@ -12,13 +12,19 @@
 package org.eclipse.kapua.gateway.client.mqtt;
 
 import java.nio.ByteBuffer;
+import java.util.Collection;
 import java.util.Set;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.stream.Collectors;
 
-import org.eclipse.kapua.gateway.client.AbstractClient;
+import org.eclipse.kapua.gateway.client.Application;
 import org.eclipse.kapua.gateway.client.BinaryPayloadCodec;
-import org.eclipse.kapua.gateway.client.Module;
 import org.eclipse.kapua.gateway.client.Credentials.UserAndPassword;
+import org.eclipse.kapua.gateway.client.Module;
+import org.eclipse.kapua.gateway.client.Topic;
+import org.eclipse.kapua.gateway.client.spi.AbstractApplication;
+import org.eclipse.kapua.gateway.client.spi.AbstractClient;
 
 public abstract class MqttClient extends AbstractClient {
 
@@ -67,16 +73,49 @@ public abstract class MqttClient extends AbstractClient {
     }
 
     private final String clientId;
+    private final BinaryPayloadCodec codec;
+    private MqttNamespace namespace;
 
-    public MqttClient(final ScheduledExecutorService executor, final String clientId, final Set<Module> modules) {
+    public MqttClient(final ScheduledExecutorService executor, final BinaryPayloadCodec codec, final MqttNamespace namespace, final String clientId, final Set<Module> modules) {
         super(executor, modules);
         this.clientId = clientId;
+        this.codec = codec;
+        this.namespace = namespace;
     }
 
-    public abstract void publishMqttPayload(String topic, ByteBuffer payload) throws Exception;
+    protected void publish(String applicationId, Topic topic, ByteBuffer buffer) throws Exception {
+        final String mqttTopic = namespace.dataTopic(clientId, applicationId, topic);
+        publishMqtt(mqttTopic, buffer);
+    }
+
+    public abstract void publishMqtt(String topic, ByteBuffer payload) throws Exception;
+
+    protected abstract CompletionStage<?> subscribeMqtt(String topic, MqttMessageHandler messageHandler) throws Exception;
+
+    protected CompletionStage<?> subscribe(final String applicationId, final Topic topic, final MqttMessageHandler messageHandler) throws Exception {
+        final String mqttTopic = namespace.dataTopic(clientId, applicationId, topic);
+        return subscribeMqtt(mqttTopic, messageHandler);
+    }
+
+    @Override
+    protected void internalUnsubscribe(final String applicationId, final Collection<Topic> topics) throws Exception {
+        Set<String> mqttTopics = topics.stream().map(topic -> namespace.dataTopic(clientId, applicationId, topic)).collect(Collectors.toSet());
+        unsubscribeMqtt(mqttTopics);
+    }
+
+    protected abstract void unsubscribeMqtt(Set<String> mqttTopics) throws  Exception;
 
     public String getMqttClientId() {
         return this.clientId;
+    }
+
+    @Override
+    protected AbstractApplication internalCreateApplication(final Application.Builder builder, final String applicationId) {
+        return new MqttApplication(this, applicationId, this.executor);
+    }
+
+    protected BinaryPayloadCodec getCodec() {
+        return this.codec;
     }
 
 }

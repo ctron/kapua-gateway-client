@@ -13,6 +13,7 @@ package org.eclipse.kapua.gateway.client.mqtt;
 
 import java.nio.ByteBuffer;
 
+@FunctionalInterface
 public interface MqttMessageHandler {
 
     public void handleMessage(String topic, ByteBuffer payload) throws Exception;
