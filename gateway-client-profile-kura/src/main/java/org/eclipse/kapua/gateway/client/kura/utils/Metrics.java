@@ -9,7 +9,7 @@
  * Contributors:
  *     Red Hat Inc - initial API and implementation
  *******************************************************************************/
-package org.eclipse.kapua.gateway.client.kura;
+package org.eclipse.kapua.gateway.client.kura.utils;
 
 import java.nio.ByteBuffer;
 import java.util.List;

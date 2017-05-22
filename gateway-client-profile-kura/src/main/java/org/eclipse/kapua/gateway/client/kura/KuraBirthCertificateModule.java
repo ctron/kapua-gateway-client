@@ -25,6 +25,7 @@ import org.eclipse.kapua.gateway.client.Client;
 import org.eclipse.kapua.gateway.client.Module;
 import org.eclipse.kapua.gateway.client.ModuleContext;
 import org.eclipse.kapua.gateway.client.kura.payload.KuraPayloadProto.KuraPayload;
+import org.eclipse.kapua.gateway.client.kura.utils.Metrics;
 import org.eclipse.kapua.gateway.client.mqtt.MqttClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
