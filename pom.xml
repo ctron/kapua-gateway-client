@@ -79,6 +79,12 @@
 
 			<dependency>
 				<groupId>de.dentrassi.kapua</groupId>
+				<artifactId>kapua-gateway-client-profile-kura</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>de.dentrassi.kapua</groupId>
 				<artifactId>kapua-gateway-client-provider-mqtt</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -126,6 +132,8 @@
 		<module>gateway-client-provider-mqtt-fuse</module>
 		<module>gateway-client-provider-mqtt-paho</module>
 		<module>gateway-client-spi</module>
+		
+		<module>karaf</module>
 	</modules>
 
 	<build>

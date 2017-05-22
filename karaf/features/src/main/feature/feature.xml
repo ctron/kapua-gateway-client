@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.4.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://karaf.apache.org/xmlns/features/v1.4.0 http://karaf.apache.org/xmlns/features/v1.4.0"
+	name="features"
+	>
+
+	<feature name="kapua-gateway-client" version="${project.version}">
+		<bundle>mvn:${project.groupId}/kapua-gateway-client-api/${project.version}</bundle>
+		<bundle>mvn:${project.groupId}/kapua-gateway-client-spi/${project.version}</bundle>
+	</feature>
+
+	<feature name="kapua-gateway-client-profile-kura" version="${project.version}">
+		<feature version="${project.version}">kapua-gateway-client</feature>
+		<bundle>mvn:${project.groupId}/kapua-gateway-client-profile-kura/${project.version}</bundle>
+
+		<bundle dependency="true">mvn:com.google.protobuf/protobuf-java/2.6.1</bundle>
+	</feature>
+
+	<feature name="kapua-gateway-client-provider-mqtt" version="${project.version}">
+		<feature version="${project.version}">kapua-gateway-client</feature>
+		<bundle>mvn:${project.groupId}/kapua-gateway-client-provider-mqtt/${project.version}</bundle>
+	</feature>
+
+	<feature name="kapua-gateway-client-kura-fuse" version="${project.version}">
+		<feature version="${project.version}">kapua-gateway-client</feature>
+		<feature version="${project.version}">kapua-gateway-client-profile-kura</feature>
+		<feature version="${project.version}">kapua-gateway-client-provider-mqtt</feature>
+
+		<bundle>mvn:${project.groupId}/kapua-gateway-client-provider-mqtt-fuse/${project.version}</bundle>
+
+		<bundle dependency="true">mvn:org.fusesource.mqtt-client/mqtt-client/1.14</bundle>
+		<bundle dependency="true">mvn:org.fusesource.hawtbuf/hawtbuf/1.11</bundle>
+		<bundle dependency="true">mvn:org.fusesource.hawtdispatch/hawtdispatch/1.22</bundle>
+		<bundle dependency="true">mvn:org.fusesource.hawtdispatch/hawtdispatch-transport/1.22</bundle>
+	</feature>
+
+	<feature name="kapua-gateway-client-kura-paho" version="${project.version}">
+		<feature version="${project.version}">kapua-gateway-client</feature>
+		<feature version="${project.version}">kapua-gateway-client-profile-kura</feature>
+		<feature version="${project.version}">kapua-gateway-client-provider-mqtt</feature>
+
+		<bundle>mvn:${project.groupId}/kapua-gateway-client-provider-mqtt-paho/${project.version}</bundle>
+
+		<bundle dependency="true">mvn:org.eclipse.paho/org.eclipse.paho.client.mqttv3/1.1.1</bundle>
+	</feature>
+
+</features>
