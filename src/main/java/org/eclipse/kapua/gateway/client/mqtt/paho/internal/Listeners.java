@@ -25,12 +25,12 @@ public final class Listeners {
         return new IMqttActionListener() {
 
             @Override
-            public void onSuccess(IMqttToken asyncActionToken) {
+            public void onSuccess(final IMqttToken asyncActionToken) {
                 token.complete(null);
             }
 
             @Override
-            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+            public void onFailure(final IMqttToken asyncActionToken, final Throwable exception) {
                 token.completeExceptionally(exception);
             }
         };
