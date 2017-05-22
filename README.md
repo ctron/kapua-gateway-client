@@ -26,7 +26,7 @@ The following quick steps should provide you with a working example.
 ### Example client
 
 ```java
-try (Client client = new KuraMqttProfile()
+try (Client client = new KuraFuseMqttProfile()
   .accountName("kapua-sys")
   .clientId("foo-bar-1")
   .brokerUrl("tcp://localhost:1883")
