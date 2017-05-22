@@ -12,11 +12,11 @@
 		<relativePath>..</relativePath>
 	</parent>
 
-	<artifactId>karaf</artifactId>
+	<artifactId>features</artifactId>
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>features</module>
+		<module>karaf</module>
 	</modules>
 
 	<build>

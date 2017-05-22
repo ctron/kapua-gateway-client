@@ -133,7 +133,7 @@
 		<module>gateway-client-provider-mqtt-paho</module>
 		<module>gateway-client-spi</module>
 
-		<module>karaf</module>
+		<module>features</module>
 	</modules>
 
 	<build>

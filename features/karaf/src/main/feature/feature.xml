@@ -2,22 +2,22 @@
 <features xmlns="http://karaf.apache.org/xmlns/features/v1.4.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://karaf.apache.org/xmlns/features/v1.4.0 http://karaf.apache.org/xmlns/features/v1.4.0"
-	name="features"
+	name="kapua-gateway-client-${project.version}"
 	>
 
-	<feature name="kapua-gateway-client" version="${project.version}">
+	<feature name="kapua-gateway-client" hidden="true" version="${project.version}">
 		<bundle>mvn:${project.groupId}/kapua-gateway-client-api/${project.version}</bundle>
 		<bundle>mvn:${project.groupId}/kapua-gateway-client-spi/${project.version}</bundle>
 	</feature>
 
-	<feature name="kapua-gateway-client-profile-kura" version="${project.version}">
+	<feature name="kapua-gateway-client-profile-kura" hidden="true" version="${project.version}">
 		<feature version="${project.version}">kapua-gateway-client</feature>
 		<bundle>mvn:${project.groupId}/kapua-gateway-client-profile-kura/${project.version}</bundle>
 
 		<bundle dependency="true">mvn:com.google.protobuf/protobuf-java/2.6.1</bundle>
 	</feature>
 
-	<feature name="kapua-gateway-client-provider-mqtt" version="${project.version}">
+	<feature name="kapua-gateway-client-provider-mqtt" hidden="true" version="${project.version}">
 		<feature version="${project.version}">kapua-gateway-client</feature>
 		<bundle>mvn:${project.groupId}/kapua-gateway-client-provider-mqtt/${project.version}</bundle>
 	</feature>
