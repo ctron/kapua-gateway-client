@@ -27,7 +27,7 @@ before_script:
 
 install:
 
-script: travis_retry mvn test
+script: travis_retry mvn -Pjavadoc test
 
 addons:
   apt:

@@ -14,7 +14,7 @@
 
 	<artifactId>kapua-gateway-client-profile-kura</artifactId>
 	<packaging>bundle</packaging>
-	
+
 	<properties>
 		<protobuf.version>2.6.1</protobuf.version>
 	</properties>
@@ -30,7 +30,7 @@
 			<groupId>de.dentrassi.kapua</groupId>
 			<artifactId>kapua-gateway-client-provider-mqtt</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>de.dentrassi.kapua</groupId>
 			<artifactId>kapua-gateway-client-spi</artifactId>
@@ -54,7 +54,7 @@
 			<artifactId>kapua-gateway-client-provider-mqtt-fuse</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>de.dentrassi.kapua</groupId>
 			<artifactId>kapua-gateway-client-provider-mqtt-paho</artifactId>
@@ -95,8 +95,15 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<excludePackageNames>org.eclipse.kapua.gateway.client.kura.payload</excludePackageNames>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
-
 
 </project>
