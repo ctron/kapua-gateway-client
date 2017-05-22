@@ -65,7 +65,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	
+
 	<dependencyManagement>
 		<dependencies>
 
@@ -132,7 +132,7 @@
 		<module>gateway-client-provider-mqtt-fuse</module>
 		<module>gateway-client-provider-mqtt-paho</module>
 		<module>gateway-client-spi</module>
-		
+
 		<module>karaf</module>
 	</modules>
 
@@ -299,14 +299,6 @@
 							</execution>
 						</executions>
 					</plugin>
-				</plugins>
-			</build>
-		</profile>
-
-		<profile>
-			<id>release</id>
-			<build>
-				<plugins>
 
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
@@ -320,6 +312,15 @@
 							</execution>
 						</executions>
 					</plugin>
+
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
 
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
