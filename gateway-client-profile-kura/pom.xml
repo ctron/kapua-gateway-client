@@ -33,18 +33,6 @@
 		
 		<dependency>
 			<groupId>de.dentrassi.kapua</groupId>
-			<artifactId>kapua-gateway-client-provider-mqtt-fuse</artifactId>
-			<optional>true</optional>
-		</dependency>
-		
-		<dependency>
-			<groupId>de.dentrassi.kapua</groupId>
-			<artifactId>kapua-gateway-client-provider-mqtt-paho</artifactId>
-			<optional>true</optional>
-		</dependency>
-
-		<dependency>
-			<groupId>de.dentrassi.kapua</groupId>
 			<artifactId>kapua-gateway-client-spi</artifactId>
 		</dependency>
 
@@ -60,6 +48,19 @@
 		</dependency>
 
 		<!-- testing dependencies -->
+
+		<dependency>
+			<groupId>de.dentrassi.kapua</groupId>
+			<artifactId>kapua-gateway-client-provider-mqtt-fuse</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>de.dentrassi.kapua</groupId>
+			<artifactId>kapua-gateway-client-provider-mqtt-paho</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>

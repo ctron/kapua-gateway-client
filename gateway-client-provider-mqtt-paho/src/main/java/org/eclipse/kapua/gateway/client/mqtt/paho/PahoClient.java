@@ -12,7 +12,9 @@
 package org.eclipse.kapua.gateway.client.mqtt.paho;
 
 import static java.util.Objects.requireNonNull;
+import static org.eclipse.kapua.gateway.client.utils.Strings.nonEmptyText;
 
+import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,20 +57,10 @@ public class PahoClient extends MqttClient {
     public static class Builder extends MqttClient.Builder<Builder> {
 
         private Supplier<MqttClientPersistence> persistenceProvider = MemoryPersistence::new;
-        private String broker;
 
         @Override
         protected Builder builder() {
             return this;
-        }
-
-        public Builder broker(final String broker) {
-            this.broker = broker;
-            return this;
-        }
-
-        public String broker() {
-            return this.broker;
         }
 
         public Builder persistentProvider(final Supplier<MqttClientPersistence> provider) {
@@ -87,14 +79,14 @@ public class PahoClient extends MqttClient {
         @Override
         public PahoClient build() throws Exception {
 
-            final String broker = nonEmptyText(broker(), "broker");
+            final URI broker = requireNonNull(broker(), "Broker must be set");
             final String clientId = nonEmptyText(clientId(), "clientId");
 
             final MqttClientPersistence persistence = requireNonNull(this.persistenceProvider.get(), "Persistence provider returned 'null' persistence");
             final MqttNamespace namespace = requireNonNull(namespace(), "Namespace must be set");
             final BinaryPayloadCodec codec = requireNonNull(codec(), "Codec must be set");
 
-            MqttAsyncClient client = new MqttAsyncClient(broker, clientId, persistence);
+            MqttAsyncClient client = new MqttAsyncClient(broker.toString(), clientId, persistence);
             ScheduledExecutorService executor = createExecutor(clientId);
             try {
                 final PahoClient result = new PahoClient(modules(), clientId, executor, namespace, codec, client, persistence, createConnectOptions(this));
@@ -114,13 +106,6 @@ public class PahoClient extends MqttClient {
                 }
             }
         }
-    }
-
-    private static String nonEmptyText(final String string, final String fieldName) {
-        if (string == null || string.isEmpty()) {
-            throw new IllegalArgumentException(String.format("'%s' must not be null or empty", fieldName));
-        }
-        return string;
     }
 
     private static ScheduledExecutorService createExecutor(final String clientId) {

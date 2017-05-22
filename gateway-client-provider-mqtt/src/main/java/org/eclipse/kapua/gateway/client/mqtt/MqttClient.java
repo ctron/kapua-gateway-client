@@ -11,8 +11,11 @@
  *******************************************************************************/
 package org.eclipse.kapua.gateway.client.mqtt;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ScheduledExecutorService;
@@ -34,6 +37,7 @@ public abstract class MqttClient extends AbstractClient {
         private BinaryPayloadCodec codec;
         private UserAndPassword userAndPassword;
         private String clientId;
+        private URI broker;
 
         public T codec(final BinaryPayloadCodec codec) {
             this.codec = codec;
@@ -65,6 +69,22 @@ public abstract class MqttClient extends AbstractClient {
         public T credentials(final UserAndPassword userAndPassword) {
             this.userAndPassword = userAndPassword;
             return builder();
+        }
+
+        public T broker(final String broker) throws URISyntaxException {
+            Objects.requireNonNull(broker);
+            this.broker = new URI(broker);
+            return builder();
+        }
+        
+        public T broker(final URI broker) throws URISyntaxException {
+            Objects.requireNonNull(broker);
+            this.broker = broker;
+            return builder();
+        }
+
+        public URI broker() {
+            return this.broker;
         }
 
         public Object credentials() {
@@ -103,7 +123,7 @@ public abstract class MqttClient extends AbstractClient {
         unsubscribeMqtt(mqttTopics);
     }
 
-    protected abstract void unsubscribeMqtt(Set<String> mqttTopics) throws  Exception;
+    protected abstract void unsubscribeMqtt(Set<String> mqttTopics) throws Exception;
 
     public String getMqttClientId() {
         return this.clientId;

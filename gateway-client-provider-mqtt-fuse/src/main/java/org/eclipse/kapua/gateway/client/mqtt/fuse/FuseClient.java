@@ -12,6 +12,7 @@
 package org.eclipse.kapua.gateway.client.mqtt.fuse;
 
 import static java.util.Objects.requireNonNull;
+import static org.eclipse.kapua.gateway.client.utils.Strings.nonEmptyText;
 
 import java.net.URI;
 import java.nio.ByteBuffer;
@@ -45,190 +46,172 @@ import org.slf4j.LoggerFactory;
 
 public class FuseClient extends MqttClient {
 
-	private static final Logger logger = LoggerFactory.getLogger(FuseClient.class);
+    private static final Logger logger = LoggerFactory.getLogger(FuseClient.class);
 
-	public static class Builder extends MqttClient.Builder<Builder> {
+    public static class Builder extends MqttClient.Builder<Builder> {
 
-		private String broker;
+        @Override
+        protected Builder builder() {
+            return this;
+        }
 
-		@Override
-		protected Builder builder() {
-			return this;
-		}
+        @Override
+        public FuseClient build() throws Exception {
 
-		public Builder broker(final String broker) {
-			this.broker = broker;
-			return this;
-		}
+            final URI broker = requireNonNull(broker(), "Broker must be set");
+            final String clientId = nonEmptyText(clientId(), "clientId");
 
-		public String broker() {
-			return this.broker;
-		}
+            final MqttNamespace namespace = requireNonNull(namespace(), "Namespace must be set");
+            final BinaryPayloadCodec codec = requireNonNull(codec(), "Codec must be set");
 
-		@Override
-		public FuseClient build() throws Exception {
+            final MQTT mqtt = new MQTT();
+            mqtt.setCleanSession(false);
+            mqtt.setHost(broker);
+            mqtt.setClientId(clientId);
 
-			final String broker = nonEmptyText(broker(), "broker");
-			final String clientId = nonEmptyText(clientId(), "clientId");
+            final Object credentials = credentials();
+            if (credentials == null) {
+                // none
+            } else if (credentials instanceof UserAndPassword) {
+                final UserAndPassword userAndPassword = (UserAndPassword) credentials;
+                mqtt.setUserName(userAndPassword.getUsername());
+                mqtt.setPassword(userAndPassword.getPasswordAsString());
+            } else {
+                throw new IllegalStateException(
+                        String.format("Unknown credentials type: %s", credentials.getClass().getName()));
+            }
 
-			final MqttNamespace namespace = requireNonNull(namespace(), "Namespace must be set");
-			final BinaryPayloadCodec codec = requireNonNull(codec(), "Codec must be set");
+            CallbackConnection connection = mqtt.callbackConnection();
+            ScheduledExecutorService executor = createExecutor(clientId);
+            try {
+                final FuseClient result = new FuseClient(modules(), clientId, executor, namespace, codec, connection);
+                connection = null;
+                executor = null;
+                return result;
+            } finally {
+                if (executor != null) {
+                    executor.shutdown();
+                }
+            }
+        }
+    }
 
-			final MQTT mqtt = new MQTT();
-			mqtt.setCleanSession(false);
-			mqtt.setHost(URI.create(broker));
-			mqtt.setClientId(clientId);
+    private static ScheduledExecutorService createExecutor(final String clientId) {
+        return Executors.newSingleThreadScheduledExecutor(r -> new Thread(r, clientId));
+    }
 
-			final Object credentials = credentials();
-			if (credentials == null) {
-				// none
-			} else if (credentials instanceof UserAndPassword) {
-				final UserAndPassword userAndPassword = (UserAndPassword) credentials;
-				mqtt.setUserName(userAndPassword.getUsername());
-				mqtt.setPassword(userAndPassword.getPasswordAsString());
-			} else {
-				throw new IllegalStateException(
-						String.format("Unknown credentials type: %s", credentials.getClass().getName()));
-			}
+    private ExtendedListener listener = new ExtendedListener() {
 
-			CallbackConnection connection = mqtt.callbackConnection();
-			ScheduledExecutorService executor = createExecutor(clientId);
-			try {
-				final FuseClient result = new FuseClient(modules(), clientId, executor, namespace, codec, connection);
-				connection = null;
-				executor = null;
-				return result;
-			} finally {
-				if (executor != null) {
-					executor.shutdown();
-				}
-			}
-		}
-	}
+        @Override
+        public void onPublish(final UTF8Buffer topic, final Buffer body, final Runnable ack) {
+            onPublish(topic, body, new Callback<Callback<Void>>() {
 
-	private static String nonEmptyText(final String string, final String fieldName) {
-		if (string == null || string.isEmpty()) {
-			throw new IllegalArgumentException(String.format("'%s' must not be null or empty", fieldName));
-		}
-		return string;
-	}
+                @Override
+                public void onSuccess(Callback<Void> value) {
+                    ack.run();
+                }
 
-	private static ScheduledExecutorService createExecutor(final String clientId) {
-		return Executors.newSingleThreadScheduledExecutor(r -> new Thread(r, clientId));
-	}
+                @Override
+                public void onFailure(Throwable value) {
+                }
 
-	private ExtendedListener listener = new ExtendedListener() {
+            });
+        }
 
-		@Override
-		public void onPublish(final UTF8Buffer topic, final Buffer body, final Runnable ack) {
-			onPublish(topic, body, new Callback<Callback<Void>>() {
+        @Override
+        public void onFailure(Throwable value) {
+        }
 
-				@Override
-				public void onSuccess(Callback<Void> value) {
-					ack.run();
-				}
+        @Override
+        public void onDisconnected() {
+            handleDisconnected();
+        }
 
-				@Override
-				public void onFailure(Throwable value) {
-				}
+        @Override
+        public void onConnected() {
+            handleConnected();
+        }
 
-			});
-		}
+        @Override
+        public void onPublish(final UTF8Buffer topic, final Buffer body, final Callback<Callback<Void>> ack) {
+            handleMessageArrived(topic.toString(), body, ack);
+        }
+    };
 
-		@Override
-		public void onFailure(Throwable value) {
-		}
+    private final CallbackConnection connection;
 
-		@Override
-		public void onDisconnected() {
-			handleDisconnected();
-		}
+    private final Map<String, MqttMessageHandler> subscriptions = new HashMap<>();
 
-		@Override
-		public void onConnected() {
-			handleConnected();
-		}
+    private FuseClient(final Set<Module> modules, final String clientId, final ScheduledExecutorService executor,
+            final MqttNamespace namespace, final BinaryPayloadCodec codec, final CallbackConnection connection) {
 
-		@Override
-		public void onPublish(final UTF8Buffer topic, final Buffer body, final Callback<Callback<Void>> ack) {
-			handleMessageArrived(topic.toString(), body, ack);
-		}
-	};
+        super(executor, codec, namespace, clientId, modules);
 
-	private final CallbackConnection connection;
+        this.connection = connection;
 
-	private final Map<String, MqttMessageHandler> subscriptions = new HashMap<>();
+        connection.listener(this.listener);
+        connection.connect(new Promise<>());
+    }
 
-	private FuseClient(final Set<Module> modules, final String clientId, final ScheduledExecutorService executor,
-			final MqttNamespace namespace, final BinaryPayloadCodec codec, final CallbackConnection connection) {
+    @Override
+    public void close() {
+        connection.disconnect(null);
+        executor.shutdown();
+    }
 
-		super(executor, codec, namespace, clientId, modules);
+    @Override
+    public void publishMqtt(final String topic, final ByteBuffer payload) {
+        this.connection.publish(Buffer.utf8(topic), new Buffer(payload), QoS.AT_LEAST_ONCE, false, null);
+    }
 
-		this.connection = connection;
+    @Override
+    protected CompletionStage<?> subscribeMqtt(final String topic, final MqttMessageHandler messageHandler) {
+        synchronized (this) {
+            this.subscriptions.put(topic, messageHandler);
 
-		connection.listener(this.listener);
-		connection.connect(new Promise<>());
-	}
+            final CompletableFuture<byte[]> future = new CompletableFuture<>();
+            connection.subscribe(
+                    new org.fusesource.mqtt.client.Topic[] {
+                            new org.fusesource.mqtt.client.Topic(topic, QoS.AT_LEAST_ONCE) },
+                    Callbacks.asCallback(future));
 
-	@Override
-	public void close() {
-		connection.disconnect(null);
-		executor.shutdown();
-	}
+            return future;
+        }
+    }
 
-	@Override
-	public void publishMqtt(final String topic, final ByteBuffer payload) {
-		this.connection.publish(Buffer.utf8(topic), new Buffer(payload), QoS.AT_LEAST_ONCE, false, null);
-	}
+    @Override
+    protected void unsubscribeMqtt(final Set<String> mqttTopics) {
 
-	@Override
-	protected CompletionStage<?> subscribeMqtt(final String topic, final MqttMessageHandler messageHandler) {
-		synchronized (this) {
-			this.subscriptions.put(topic, messageHandler);
+        logger.info("Unsubscribe from: {}", mqttTopics);
 
-			final CompletableFuture<byte[]> future = new CompletableFuture<>();
-			connection.subscribe(
-					new org.fusesource.mqtt.client.Topic[] {
-							new org.fusesource.mqtt.client.Topic(topic, QoS.AT_LEAST_ONCE) },
-					Callbacks.asCallback(future));
+        final List<UTF8Buffer> topics = new ArrayList<>(mqttTopics.size());
 
-			return future;
-		}
-	}
+        synchronized (this) {
+            for (final String topic : mqttTopics) {
+                if (subscriptions.remove(topic) != null) {
+                    topics.add(new UTF8Buffer(topic));
+                }
+            }
+        }
 
-	@Override
-	protected void unsubscribeMqtt(final Set<String> mqttTopics) {
+        connection.unsubscribe(topics.toArray(new UTF8Buffer[topics.size()]), new Promise<>());
+    }
 
-		logger.info("Unsubscribe from: {}", mqttTopics);
+    protected void handleMessageArrived(final String topic, final Buffer payload, final Callback<Callback<Void>> ack) {
+        final MqttMessageHandler handler;
 
-		final List<UTF8Buffer> topics = new ArrayList<>(mqttTopics.size());
+        synchronized (this) {
+            handler = this.subscriptions.get(topic);
+        }
 
-		synchronized (this) {
-			for (final String topic : mqttTopics) {
-				if (subscriptions.remove(topic) != null) {
-					topics.add(new UTF8Buffer(topic));
-				}
-			}
-		}
-
-		connection.unsubscribe(topics.toArray(new UTF8Buffer[topics.size()]), new Promise<>());
-	}
-
-	protected void handleMessageArrived(final String topic, final Buffer payload, final Callback<Callback<Void>> ack) {
-		final MqttMessageHandler handler;
-
-		synchronized (this) {
-			handler = this.subscriptions.get(topic);
-		}
-
-		if (handler != null) {
-			try {
-				handler.handleMessage(topic, payload.toByteBuffer());
-				ack.onSuccess(null);
-			} catch (Exception e) {
-				ack.onFailure(e);
-			}
-		}
-	}
+        if (handler != null) {
+            try {
+                handler.handleMessage(topic, payload.toByteBuffer());
+                ack.onSuccess(null);
+            } catch (Exception e) {
+                ack.onFailure(e);
+            }
+        }
+    }
 
 }

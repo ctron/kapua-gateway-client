@@ -11,43 +11,57 @@
  *******************************************************************************/
 package org.eclipse.kapua.gateway.client.profile.kura;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 import org.eclipse.kapua.gateway.client.Client;
 import org.eclipse.kapua.gateway.client.Credentials.UserAndPassword;
 import org.eclipse.kapua.gateway.client.kura.KuraBinaryPayloadCodec;
 import org.eclipse.kapua.gateway.client.kura.KuraBirthCertificateModule;
 import org.eclipse.kapua.gateway.client.kura.KuraNamespace;
-import org.eclipse.kapua.gateway.client.mqtt.fuse.FuseClient;
+import org.eclipse.kapua.gateway.client.mqtt.MqttClient;
 
-public class KuraFuseMqttProfile {
+public class KuraMqttProfile<B extends MqttClient.Builder<B>> {
 
-    public static KuraFuseMqttProfile newProfile() {
-        return new KuraFuseMqttProfile();
+    public static <B extends MqttClient.Builder<B>> KuraMqttProfile<B> newProfile(final Supplier<B> builderSupplier) {
+        requireNonNull(builderSupplier);
+        return new KuraMqttProfile<>(builderSupplier);
     }
 
+    private final Supplier<B> builderSupplier;
     private String accountName;
     private String brokerUrl;
     private String clientId;
     private UserAndPassword userAndPassword;
+    private Consumer<B> customizer;
 
-    private KuraFuseMqttProfile() {
+    private KuraMqttProfile(final Supplier<B> builderSupplier) {
+        this.builderSupplier = builderSupplier;
     }
 
-    public KuraFuseMqttProfile accountName(final String accountName) {
+    public KuraMqttProfile<B> accountName(final String accountName) {
         this.accountName = accountName;
         return this;
     }
 
-    public KuraFuseMqttProfile brokerUrl(final String brokerUrl) {
+    public KuraMqttProfile<B> brokerUrl(final String brokerUrl) {
         this.brokerUrl = brokerUrl;
         return this;
     }
 
-    public KuraFuseMqttProfile clientId(final String clientId) {
+    public KuraMqttProfile<B> customizer(Consumer<B> customizer) {
+        this.customizer = customizer;
+        return this;
+    }
+
+    public KuraMqttProfile<B> clientId(final String clientId) {
         this.clientId = clientId;
         return this;
     }
 
-    public KuraFuseMqttProfile credentials(final UserAndPassword userAndPassword) {
+    public KuraMqttProfile<B> credentials(final UserAndPassword userAndPassword) {
         this.userAndPassword = userAndPassword;
         return this;
     }
@@ -55,13 +69,11 @@ public class KuraFuseMqttProfile {
     public Client build() throws Exception {
         validate();
 
-        return new FuseClient.Builder()
+        B builder = builderSupplier.get()
                 .clientId(this.clientId)
                 .broker(this.brokerUrl)
                 .credentials(this.userAndPassword)
-                .codec(
-                        new KuraBinaryPayloadCodec.Builder()
-                                .build())
+                .codec(new KuraBinaryPayloadCodec.Builder().build())
                 .namespace(
                         new KuraNamespace.Builder()
                                 .accountName(this.accountName)
@@ -69,8 +81,13 @@ public class KuraFuseMqttProfile {
                 .module(
                         KuraBirthCertificateModule.newBuilder(this.accountName)
                                 .defaultProviders()
-                                .build())
-                .build();
+                                .build());
+
+        if (customizer != null) {
+            customizer.accept(builder);
+        }
+
+        return builder.build();
     }
 
     private void validate() {
