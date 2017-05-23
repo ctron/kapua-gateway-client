@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>de.dentrassi.kapua.examples</groupId>
+		<artifactId>kapua-gateway-client-examples</artifactId>
+		<version>0.1.1-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
+
+	<artifactId>eclipse-smarthome-persistence</artifactId>
+	<packaging>bundle</packaging>
+	<name>Examples :: Eclipse SmartHome</name>
+
+	<repositories>
+		<repository>
+			<id>eclipse.smarthome</id>
+			<url>https://repo.eclipse.org/content/groups/smarthome/</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>de.dentrassi.kapua</groupId>
+			<artifactId>kapua-gateway-client-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>de.dentrassi.kapua</groupId>
+			<artifactId>kapua-gateway-client-profile-kura</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>de.dentrassi.kapua</groupId>
+			<artifactId>kapua-gateway-client-provider-mqtt-fuse</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.smarthome.core</groupId>
+			<artifactId>org.eclipse.smarthome.core</artifactId>
+			<version>0.8.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.smarthome.core</groupId>
+			<artifactId>org.eclipse.smarthome.core.persistence</artifactId>
+			<version>0.8.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>org.osgi.service.component.annotations</artifactId>
+			<version>1.3.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>org.osgi.service.metatype.annotations</artifactId>
+			<version>1.3.0</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

@@ -79,6 +79,8 @@
 							<features>
 								<feature>kapua-gateway-client-kura-paho</feature>
 								<feature>kapua-gateway-client-kura-fuse</feature>
+
+								<feature>eclipse-smarthome-kapua-persistence</feature>
 							</features>
 						</configuration>
 					</execution>
