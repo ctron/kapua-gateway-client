@@ -14,6 +14,7 @@ package de.dentrassi.kapua.smarthome;
 import static org.eclipse.kapua.gateway.client.profile.kura.KuraMqttProfile.newProfile;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -25,7 +26,7 @@ import org.eclipse.kapua.gateway.client.Errors;
 import org.eclipse.kapua.gateway.client.Payload;
 import org.eclipse.kapua.gateway.client.Sender;
 import org.eclipse.kapua.gateway.client.Topic;
-import org.eclipse.kapua.gateway.client.mqtt.fuse.FuseClient;
+import org.eclipse.kapua.gateway.client.mqtt.paho.PahoClient;
 import org.eclipse.kapua.gateway.client.profile.kura.KuraMqttProfile;
 import org.eclipse.smarthome.core.items.Item;
 import org.eclipse.smarthome.core.library.types.DecimalType;
@@ -45,8 +46,8 @@ import org.slf4j.LoggerFactory;
 
 import de.dentrassi.kapua.smarthome.internal.Configuration;
 
-@Component
-@Designate(ocd=Configuration.class)
+@Component(properties = "OSGI-INF/persistence.properties")
+@Designate(ocd = Configuration.class)
 public class PersistenceServiceImpl implements PersistenceService {
 
     private static final Logger logger = LoggerFactory.getLogger(PersistenceServiceImpl.class);
@@ -55,8 +56,13 @@ public class PersistenceServiceImpl implements PersistenceService {
     private Application app;
 
     @Override
-    public String getName() {
+    public String getId() {
         return "kapua";
+    }
+
+    @Override
+    public String getLabel(final Locale locale) {
+        return "Eclipse Kapua";
     }
 
     @Override
@@ -96,31 +102,37 @@ public class PersistenceServiceImpl implements PersistenceService {
                 logger.debug("Not configured, discarding event");
                 return;
             }
-            sender = app.data(Topic.of(key)).errors(Errors.ignore());
-            sender.send(Payload.of(data));
+            final Topic topic = Topic.of(key);
+            final Payload payload = Payload.of(data);
+
+            logger.debug("Topic: {}, payload: {}", topic, payload);
+
+            sender = app.data(topic).errors(Errors.ignore());
+            sender.send(payload);
         }
     }
 
     @Activate
-    protected synchronized void activate(final Map<String, Object> properties) throws Exception {
+    protected synchronized void activate(final Map<String, ?> properties) throws Exception {
         if (logger.isWarnEnabled()) {
             logger.warn("Create new Kapua client: {}", new TreeMap<>(properties));
         }
 
         final String broker = getOrDefault(properties, "brokerUrl", null);
         if (broker == null || broker.isEmpty()) {
-            throw new IllegalStateException("'brokerUrl' is not set");
+            logger.warn("Missing broker URL. Not starting.");
+            return;
         }
 
-        final KuraMqttProfile<FuseClient.Builder> profile = newProfile(FuseClient.Builder::new);
+        final KuraMqttProfile<PahoClient.Builder> profile = newProfile(PahoClient.Builder::new);
         profile.accountName(getOrDefault(properties, "accoutName", "kapua-sys"));
         profile.clientId(getOrDefault(properties, "clientId", UUID.randomUUID().toString()));
         profile.brokerUrl(broker);
 
-        final String user = getOrDefault(properties, "user",null);
+        final String user = getOrDefault(properties, "user", null);
         final String password = getOrDefault(properties, "password", null);
 
-        if (!user.isEmpty() && !password.isEmpty()) {
+        if (user != null && password != null) {
             profile.credentials(Credentials.userAndPassword(user, password));
         }
 
@@ -155,7 +167,7 @@ public class PersistenceServiceImpl implements PersistenceService {
     }
 
     @Modified
-    protected synchronized void modified(final Map<String, Object> properties) throws Exception {
+    protected synchronized void modified(final Map<String, ?> properties) throws Exception {
         deactivate();
         activate(properties);
     }

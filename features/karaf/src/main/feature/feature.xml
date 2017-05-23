@@ -47,22 +47,4 @@
 		<bundle dependency="true">mvn:org.eclipse.paho/org.eclipse.paho.client.mqttv3/1.1.1</bundle>
 	</feature>
 
-	<!-- examples -->
-
-	<feature name="eclipse-smarthome-kapua-persistence" version="${project.version}">
-
-		<feature version="${project.version}">kapua-gateway-client-kura-fuse</feature>
-
-		<bundle>mvn:de.dentrassi.kapua.examples/eclipse-smarthome-persistence/${project.version}</bundle>
-
-		<feature dependency="true">scr</feature>
-		<feature dependency="true">eventadmin</feature>
-
-		<bundle dependency="true">https://repo.eclipse.org/content/groups/smarthome/org/eclipse/smarthome/core/org.eclipse.smarthome.core/0.8.0/org.eclipse.smarthome.core-0.8.0.jar</bundle>
-		<bundle dependency="true">https://repo.eclipse.org/content/groups/smarthome/org/eclipse/smarthome/core/org.eclipse.smarthome.core.persistence/0.8.0/org.eclipse.smarthome.core.persistence-0.8.0.jar</bundle>
-		<bundle dependency="true">mvn:com.google.guava/guava/19.0</bundle>
-		<bundle dependency="true">mvn:com.google.code.gson/gson/2.7</bundle>
-		<bundle dependency="true">mvn:commons-lang/commons-lang/2.6</bundle>
-	</feature>
-
 </features>

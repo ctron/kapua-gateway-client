@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.4.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://karaf.apache.org/xmlns/features/v1.4.0 http://karaf.apache.org/xmlns/features/v1.4.0"
+	name="kapua-gateway-client-examples-${project.version}">
+
+	<!-- Eclipse SmartHome -->
+
+	<repository>mvn:de.dentrassi.kapua/karaf/${project.version}/xml/features</repository>
+
+	<feature name="eclipse-smarthome-kapua-persistence" version="${project.version}">
+		<feature version="${project.version}">kapua-gateway-client</feature>
+		<feature version="${project.version}">kapua-gateway-client-profile-kura</feature>
+		<feature version="${project.version}">kapua-gateway-client-provider-mqtt</feature>
+
+		<bundle>mvn:${project.groupId}/kapua-gateway-client-provider-mqtt-paho/${project.version}</bundle>
+
+		<feature dependency="true">scr</feature>
+		<feature dependency="true">eventadmin</feature>
+
+		<bundle dependency="true">mvn:com.google.code.gson/gson/2.3.1</bundle>
+		<bundle dependency="true">mvn:com.google.guava/guava/18.0</bundle>
+		
+		<bundle dependency="true">mvn:org.eclipse.smarthome.config/org.eclipse.smarthome.config.core/${esh.version}</bundle>
+		<bundle dependency="true">mvn:org.eclipse.smarthome.core/org.eclipse.smarthome.core/${esh.version}</bundle>
+		<bundle dependency="true">mvn:org.eclipse.smarthome.core/org.eclipse.smarthome.core.persistence/${esh.version}</bundle>
+		
+		<feature dependency="true">esh-tp-paho</feature>
+		<feature dependency="true">esh-tp-apache-commons</feature>
+
+		<bundle>mvn:de.dentrassi.kapua.examples/eclipse-smarthome-persistence/${project.version}</bundle>
+		
+		<configfile finalname="../conf/persistence/kapua.persist">mvn:de.dentrassi.kapua.examples/eclipse-smarthome-persistence/${project.version}/persist/kapua</configfile>
+	</feature>
+
+</features>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config-description:config-descriptions
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:config-description="http://eclipse.org/smarthome/schemas/config-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/config-description/v1.0.0
+        http://eclipse.org/smarthome/schemas/config-description-1.0.0.xsd">
+	<config-description uri="io:kapua">
+		<parameter name="brokerUrl" type="text" required="true">
+			<label>URL for the Eclipse Kapua Broker</label>
+			<description>The URL for the broker used by the Eclipse Kapua instance</description>
+			<default>tcp://localhost:1883</default>
+		</parameter>
+		<parameter name="user" type="text" required="false">
+			<label>Username</label>
+			<description>The username for the MQTT broker</description>
+			<default>kapua-broker</default>
+		</parameter>
+		<parameter name="password" type="text" required="false">
+			<label>Password</label>
+			<description>The password for the MQTT broker</description>
+			<default>kapua-password</default>
+		</parameter>
+		<parameter name="clientId" type="text" required="false">
+			<label>Client ID</label>
+			<description>The MQTT client ID</description>
+		</parameter>
+	</config-description>
+</config-description:config-descriptions>

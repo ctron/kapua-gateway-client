@@ -1,0 +1,8 @@
+Strategies {
+	everyMinute : "0 * * * * ?"
+}
+
+Items {
+	// store all items starting with "Temperature"
+	Temperature* : strategy = everyChange, everyMinute, restoreOnStartup
+}
