@@ -14,6 +14,7 @@
 
 	<artifactId>karaf</artifactId>
 	<packaging>feature</packaging>
+	<name>Eclipse Kapua :: Gateway Client :: Features :: Karaf</name>
 
 	<properties>
 		<karaf.version>4.1.1</karaf.version>

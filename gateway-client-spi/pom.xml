@@ -14,6 +14,7 @@
 
 	<artifactId>kapua-gateway-client-spi</artifactId>
 	<packaging>bundle</packaging>
+	<name>Eclipse Kapua :: Gateway Client :: SPI</name>
 
 	<dependencies>
 
