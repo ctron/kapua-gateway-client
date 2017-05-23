@@ -31,7 +31,6 @@ import java.util.function.Supplier;
 import org.eclipse.kapua.gateway.client.BinaryPayloadCodec;
 import org.eclipse.kapua.gateway.client.Credentials.UserAndPassword;
 import org.eclipse.kapua.gateway.client.Module;
-import org.eclipse.kapua.gateway.client.Topic;
 import org.eclipse.kapua.gateway.client.mqtt.MqttClient;
 import org.eclipse.kapua.gateway.client.mqtt.MqttMessageHandler;
 import org.eclipse.kapua.gateway.client.mqtt.MqttNamespace;
@@ -245,11 +244,8 @@ public class PahoClient extends MqttClient {
         publish(topic, payload);
     }
 
-    @Override
-    protected void publish(String applicationId, Topic topic, ByteBuffer buffer) {
-    }
-
     protected void publish(final String topic, final ByteBuffer payload) throws MqttException {
+        logger.debug("Publishing {} - {}", topic, payload);
         this.client.publish(topic, Buffers.toByteArray(payload), 1, false);
     }
 
