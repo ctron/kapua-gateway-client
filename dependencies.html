@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="Date-Revision-yyyymmdd" content="20170524" />
     <meta http-equiv="Content-Language" content="en" />
-    <title>Eclipse Kapua :: Gateway Client :: SPI &#x2013; Project Dependencies</title>
+    <title>Eclipse Kapua :: Gateway Client :: Provider :: MQTT &#x2013; Project Dependencies</title>
     <link rel="stylesheet" href="./css/apache-maven-fluido-1.6.min.css" />
     <link rel="stylesheet" href="./css/site.css" />
     <link rel="stylesheet" href="./css/print.css" media="print" />
@@ -29,7 +29,7 @@
     <body class="topBarDisabled">
       <div class="container-fluid">
       <div id="banner">
-        <div class="pull-left"><div id="bannerLeft"><h2>Eclipse Kapua :: Gateway Client :: SPI</h2>
+        <div class="pull-left"><div id="bannerLeft"><h2>Eclipse Kapua :: Gateway Client :: Provider :: MQTT</h2>
 </div>
 </div>
         <div class="pull-right"></div>
@@ -54,9 +54,9 @@
           <hr />
           <div id="poweredBy">
           <script type="text/javascript">asyncJs( 'https://apis.google.com/js/plusone.js' )</script>
-        <div class="g-plusone" data-href="https://github.com/ctron/kapua-gateway-client/kapua-gateway-client-spi" data-size="tall" ></div>
+        <div class="g-plusone" data-href="https://github.com/ctron/kapua-gateway-client/kapua-gateway-client-provider-mqtt" data-size="tall" ></div>
                   <div class="clear"></div>
-                  <iframe src="https://www.facebook.com/plugins/like.php?href=https://github.com/ctron/kapua-gateway-client/kapua-gateway-client-spi&send=false&layout=box_count&show-faces=false&action=like&colorscheme=light"
+                  <iframe src="https://www.facebook.com/plugins/like.php?href=https://github.com/ctron/kapua-gateway-client/kapua-gateway-client-provider-mqtt&send=false&layout=box_count&show-faces=false&action=like&colorscheme=light"
         scrolling="no" frameborder="0"
         style="border:none; width:48px; height:63px; margin-top: 10px;" ></iframe>
               <div class="clear"></div>
@@ -91,6 +91,12 @@
 <td>jar</td>
 <td><a class="externalLink" href="https://www.eclipse.org/legal/epl-v10.html">Eclipse Public License - v 1.0</a></td></tr>
 <tr class="a">
+<td>de.dentrassi.kapua</td>
+<td><a class="externalLink" href="https://github.com/ctron/kapua-gateway-client/kapua-gateway-client-spi">kapua-gateway-client-spi</a></td>
+<td>0.2.0</td>
+<td>jar</td>
+<td><a class="externalLink" href="https://www.eclipse.org/legal/epl-v10.html">Eclipse Public License - v 1.0</a></td></tr>
+<tr class="b">
 <td>org.slf4j</td>
 <td><a class="externalLink" href="http://www.slf4j.org">slf4j-api</a></td>
 <td>1.7.24</td>
@@ -156,14 +162,14 @@
 <div class="section">
 <h3><a name="Dependency_Tree"></a>Dependency Tree</h3>
 <ul>
-<li>de.dentrassi.kapua:kapua-gateway-client-spi:bundle:0.2.0 <img id="_img1" src="./images/icon_info_sml.gif" alt="[Information]" onclick="toggleDependencyDetails( '_dep0', '_img1' );" style="cursor: pointer; vertical-align: text-bottom;"></img><div id="_dep0" style="display:none">
+<li>de.dentrassi.kapua:kapua-gateway-client-provider-mqtt:bundle:0.2.0 <img id="_img1" src="./images/icon_info_sml.gif" alt="[Information]" onclick="toggleDependencyDetails( '_dep0', '_img1' );" style="cursor: pointer; vertical-align: text-bottom;"></img><div id="_dep0" style="display:none">
 <table border="0" class="table table-striped">
 <tr class="a">
-<th>Eclipse Kapua :: Gateway Client :: SPI</th></tr>
+<th>Eclipse Kapua :: Gateway Client :: Provider :: MQTT</th></tr>
 <tr class="b">
 <td>
 <p><b>Description: </b>A gateway client SDK for Eclipse Kapua&#x2122;</p>
-<p><b>URL: </b><a class="externalLink" href="https://github.com/ctron/kapua-gateway-client/kapua-gateway-client-spi">https://github.com/ctron/kapua-gateway-client/kapua-gateway-client-spi</a></p>
+<p><b>URL: </b><a class="externalLink" href="https://github.com/ctron/kapua-gateway-client/kapua-gateway-client-provider-mqtt">https://github.com/ctron/kapua-gateway-client/kapua-gateway-client-provider-mqtt</a></p>
 <p><b>Project Licenses: </b><a class="externalLink" href="https://www.eclipse.org/legal/epl-v10.html">Eclipse Public License - v 1.0</a></p></td></tr></table></div>
 <ul>
 <li>de.dentrassi.kapua:kapua-gateway-client-api:jar:0.2.0 (compile) <img id="_img3" src="./images/icon_info_sml.gif" alt="[Information]" onclick="toggleDependencyDetails( '_dep2', '_img3' );" style="cursor: pointer; vertical-align: text-bottom;"></img><div id="_dep2" style="display:none">
@@ -175,7 +181,16 @@
 <p><b>Description: </b>A gateway client SDK for Eclipse Kapua&#x2122;</p>
 <p><b>URL: </b><a class="externalLink" href="https://github.com/ctron/kapua-gateway-client/kapua-gateway-client-api">https://github.com/ctron/kapua-gateway-client/kapua-gateway-client-api</a></p>
 <p><b>Project Licenses: </b><a class="externalLink" href="https://www.eclipse.org/legal/epl-v10.html">Eclipse Public License - v 1.0</a></p></td></tr></table></div></li>
-<li>org.slf4j:slf4j-api:jar:1.7.24 (compile) <img id="_img5" src="./images/icon_info_sml.gif" alt="[Information]" onclick="toggleDependencyDetails( '_dep4', '_img5' );" style="cursor: pointer; vertical-align: text-bottom;"></img><div id="_dep4" style="display:none">
+<li>de.dentrassi.kapua:kapua-gateway-client-spi:jar:0.2.0 (compile) <img id="_img5" src="./images/icon_info_sml.gif" alt="[Information]" onclick="toggleDependencyDetails( '_dep4', '_img5' );" style="cursor: pointer; vertical-align: text-bottom;"></img><div id="_dep4" style="display:none">
+<table border="0" class="table table-striped">
+<tr class="a">
+<th>Eclipse Kapua :: Gateway Client :: SPI</th></tr>
+<tr class="b">
+<td>
+<p><b>Description: </b>A gateway client SDK for Eclipse Kapua&#x2122;</p>
+<p><b>URL: </b><a class="externalLink" href="https://github.com/ctron/kapua-gateway-client/kapua-gateway-client-spi">https://github.com/ctron/kapua-gateway-client/kapua-gateway-client-spi</a></p>
+<p><b>Project Licenses: </b><a class="externalLink" href="https://www.eclipse.org/legal/epl-v10.html">Eclipse Public License - v 1.0</a></p></td></tr></table></div></li>
+<li>org.slf4j:slf4j-api:jar:1.7.24 (compile) <img id="_img7" src="./images/icon_info_sml.gif" alt="[Information]" onclick="toggleDependencyDetails( '_dep6', '_img7' );" style="cursor: pointer; vertical-align: text-bottom;"></img><div id="_dep6" style="display:none">
 <table border="0" class="table table-striped">
 <tr class="a">
 <th>SLF4J API Module</th></tr>
@@ -184,7 +199,7 @@
 <p><b>Description: </b>The slf4j API</p>
 <p><b>URL: </b><a class="externalLink" href="http://www.slf4j.org">http://www.slf4j.org</a></p>
 <p><b>Project Licenses: </b><a class="externalLink" href="http://www.opensource.org/licenses/mit-license.php">MIT License</a></p></td></tr></table></div></li>
-<li>ch.qos.logback:logback-classic:jar:1.2.3 (test) <img id="_img7" src="./images/icon_info_sml.gif" alt="[Information]" onclick="toggleDependencyDetails( '_dep6', '_img7' );" style="cursor: pointer; vertical-align: text-bottom;"></img><div id="_dep6" style="display:none">
+<li>ch.qos.logback:logback-classic:jar:1.2.3 (test) <img id="_img9" src="./images/icon_info_sml.gif" alt="[Information]" onclick="toggleDependencyDetails( '_dep8', '_img9' );" style="cursor: pointer; vertical-align: text-bottom;"></img><div id="_dep8" style="display:none">
 <table border="0" class="table table-striped">
 <tr class="a">
 <th>Logback Classic Module</th></tr>
@@ -194,7 +209,7 @@
 <p><b>URL: </b><a class="externalLink" href="http://logback.qos.ch/logback-classic">http://logback.qos.ch/logback-classic</a></p>
 <p><b>Project Licenses: </b><a class="externalLink" href="http://www.eclipse.org/legal/epl-v10.html">Eclipse Public License - v 1.0</a>, <a class="externalLink" href="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">GNU Lesser General Public License</a></p></td></tr></table></div>
 <ul>
-<li>ch.qos.logback:logback-core:jar:1.2.3 (test) <img id="_img9" src="./images/icon_info_sml.gif" alt="[Information]" onclick="toggleDependencyDetails( '_dep8', '_img9' );" style="cursor: pointer; vertical-align: text-bottom;"></img><div id="_dep8" style="display:none">
+<li>ch.qos.logback:logback-core:jar:1.2.3 (test) <img id="_img11" src="./images/icon_info_sml.gif" alt="[Information]" onclick="toggleDependencyDetails( '_dep10', '_img11' );" style="cursor: pointer; vertical-align: text-bottom;"></img><div id="_dep10" style="display:none">
 <table border="0" class="table table-striped">
 <tr class="a">
 <th>Logback Core Module</th></tr>
@@ -207,7 +222,7 @@
 <h2><a name="Licenses"></a>Licenses</h2>
 <p><b>MIT License: </b>SLF4J API Module</p>
 <p><b>GNU Lesser General Public License: </b>Logback Classic Module, Logback Core Module</p>
-<p><b>Eclipse Public License - v 1.0: </b>Eclipse Kapua :: Gateway Client :: API, Eclipse Kapua :: Gateway Client :: SPI, Logback Classic Module, Logback Core Module</p></div><a name="Dependency_File_Details"></a>
+<p><b>Eclipse Public License - v 1.0: </b>Eclipse Kapua :: Gateway Client :: API, Eclipse Kapua :: Gateway Client :: Provider :: MQTT, Eclipse Kapua :: Gateway Client :: SPI, Logback Classic Module, Logback Core Module</p></div><a name="Dependency_File_Details"></a>
 <div class="section">
 <h2><a name="Dependency_File_Details"></a>Dependency File Details</h2>
 <table border="0" class="table table-striped">
@@ -244,6 +259,14 @@
 <td>1.8</td>
 <td>Yes</td></tr>
 <tr class="a">
+<td>kapua-gateway-client-spi-0.2.0.jar</td>
+<td>14.1 kB</td>
+<td>23</td>
+<td>9</td>
+<td>2</td>
+<td>1.8</td>
+<td>Yes</td></tr>
+<tr class="b">
 <td>slf4j-api-1.7.24.jar</td>
 <td>41.2 kB</td>
 <td>46</td>
@@ -251,7 +274,7 @@
 <td>4</td>
 <td>1.5</td>
 <td>Yes</td></tr>
-<tr class="b">
+<tr class="a">
 <th>Total</th>
 <th>Size</th>
 <th>Entries</th>
@@ -259,23 +282,23 @@
 <th>Packages</th>
 <th>Java Version</th>
 <th>Debug Information</th></tr>
-<tr class="a">
-<td>4</td>
-<td>823.4 kB</td>
-<td>736</td>
-<td>607</td>
-<td>68</td>
-<td>1.8</td>
-<td>4</td></tr>
 <tr class="b">
-<td>compile: 2</td>
-<td>compile: 61.1 kB</td>
-<td>compile: 83</td>
-<td>compile: 59</td>
-<td>compile: 5</td>
-<td>-</td>
-<td>compile: 2</td></tr>
+<td>5</td>
+<td>837.5 kB</td>
+<td>759</td>
+<td>616</td>
+<td>70</td>
+<td>1.8</td>
+<td>5</td></tr>
 <tr class="a">
+<td>compile: 3</td>
+<td>compile: 75.2 kB</td>
+<td>compile: 106</td>
+<td>compile: 68</td>
+<td>compile: 7</td>
+<td>-</td>
+<td>compile: 3</td></tr>
+<tr class="b">
 <td>test: 2</td>
 <td>test: 762.2 kB</td>
 <td>test: 653</td>
@@ -311,14 +334,17 @@
 <td>de.dentrassi.kapua:kapua-gateway-client-api:jar:0.2.0</td>
 <td><a class="externalLink" href="https://repo.maven.apache.org/maven2/de/dentrassi/kapua/kapua-gateway-client-api/0.2.0/kapua-gateway-client-api-0.2.0.jar"><img alt="Found at https://repo.maven.apache.org/maven2" src="images/icon_success_sml.gif" /></a></td></tr>
 <tr class="a">
+<td>de.dentrassi.kapua:kapua-gateway-client-spi:jar:0.2.0</td>
+<td><a class="externalLink" href="https://repo.maven.apache.org/maven2/de/dentrassi/kapua/kapua-gateway-client-spi/0.2.0/kapua-gateway-client-spi-0.2.0.jar"><img alt="Found at https://repo.maven.apache.org/maven2" src="images/icon_success_sml.gif" /></a></td></tr>
+<tr class="b">
 <td>org.slf4j:slf4j-api:jar:1.7.24</td>
 <td><a class="externalLink" href="https://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/1.7.24/slf4j-api-1.7.24.jar"><img alt="Found at https://repo.maven.apache.org/maven2" src="images/icon_success_sml.gif" /></a></td></tr>
-<tr class="b">
+<tr class="a">
 <th>Total</th>
 <th>central</th></tr>
-<tr class="a">
-<td>4 (compile: 2, test: 2)</td>
-<td>4</td></tr></table></div>
+<tr class="b">
+<td>5 (compile: 3, test: 2)</td>
+<td>5</td></tr></table></div>
         </div>
       </div>
     </div>
