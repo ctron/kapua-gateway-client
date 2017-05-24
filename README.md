@@ -18,7 +18,7 @@ The following quick steps should provide you with a working example.
 ```xml
 <dependency>
   <groupId>de.dentrassi.kapua</groupId>
-  <artifactId>kapua-gateway-client</artifactId>
+  <artifactId>kapua-gateway-client-provider-mqtt-fuse</artifactId>
   <version><!-- replace with current version --></version>
 </dependency>
 ```
@@ -26,7 +26,7 @@ The following quick steps should provide you with a working example.
 ### Example client
 
 ```java
-try (Client client = KuraMqttProfile.newProfile(PahoClient.Builder::new)
+try (Client client = KuraMqttProfile.newProfile(FuseClient.Builder::new)
   .accountName("kapua-sys")
   .clientId("foo-bar-1")
   .brokerUrl("tcp://localhost:1883")
