@@ -6,7 +6,7 @@
 
 	<groupId>de.dentrassi.kapua</groupId>
 	<artifactId>kapua-gateway-client</artifactId>
-	<version>0.2.0</version>
+	<version>0.2.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Eclipse Kapua :: Gateway Client</name>
@@ -38,7 +38,7 @@
 		<url>https://github.com/ctron/kapua-gateway-client</url>
 		<connection>scm:git:git://github.com/ctron/kapua-gateway-client.git</connection>
 		<developerConnection>scm:git:git@github.com:ctron/kapua-gateway-client.git</developerConnection>
-		<tag>kapua-gateway-client-0.2.0</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<issueManagement>
