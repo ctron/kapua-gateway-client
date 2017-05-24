@@ -50,6 +50,14 @@
 			<groupId>de.dentrassi.kapua</groupId>
 			<artifactId>kapua-gateway-client-profile-kura</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>de.dentrassi.kapua</groupId>
+			<artifactId>kapua-gateway-client-provider-mqtt-fuse</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>de.dentrassi.kapua</groupId>
+			<artifactId>kapua-gateway-client-provider-mqtt-paho</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
