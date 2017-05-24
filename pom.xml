@@ -247,6 +247,7 @@
 				<configuration>
 					<autoVersionSubmodules>true</autoVersionSubmodules>
 					<releaseProfiles>javadoc,release</releaseProfiles>
+					<preparationGoals>clean install</preparationGoals>
 					<goals>deploy</goals>
 				</configuration>
 			</plugin>
