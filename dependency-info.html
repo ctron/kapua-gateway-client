@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="Date-Revision-yyyymmdd" content="20170524" />
     <meta http-equiv="Content-Language" content="en" />
-    <title>Eclipse Kapua :: Gateway Client :: SPI &#x2013; Dependency Information</title>
+    <title>Eclipse Kapua :: Gateway Client &#x2013; Dependency Information</title>
     <link rel="stylesheet" href="./css/apache-maven-fluido-1.6.min.css" />
     <link rel="stylesheet" href="./css/site.css" />
     <link rel="stylesheet" href="./css/print.css" media="print" />
@@ -29,7 +29,7 @@
     <body class="topBarDisabled">
       <div class="container-fluid">
       <div id="banner">
-        <div class="pull-left"><div id="bannerLeft"><h2>Eclipse Kapua :: Gateway Client :: SPI</h2>
+        <div class="pull-left"><div id="bannerLeft"><h2>Eclipse Kapua :: Gateway Client</h2>
 </div>
 </div>
         <div class="pull-right"></div>
@@ -48,15 +48,35 @@
           <div class="well sidebar-nav">
 <ul class="nav nav-list">
           <li class="nav-header">Overview</li>
-    <li><a href="../index.html" title="Introduction"><span class="none"></span>Introduction</a>  </li>
-    <li><a href="../apidocs/index.html" title="Javadoc"><span class="none"></span>Javadoc</a>  </li>
+    <li><a href="index.html" title="Introduction"><span class="none"></span>Introduction</a>  </li>
+    <li><a href="apidocs/index.html" title="Javadoc"><span class="none"></span>Javadoc</a>  </li>
+          <li class="nav-header">Project Documentation</li>
+    <li><a href="project-info.html" title="Project Information"><span class="icon-chevron-down"></span>Project Information</a>
+      <ul class="nav nav-list">
+    <li><a href="dependency-convergence.html" title="Dependency Convergence"><span class="none"></span>Dependency Convergence</a>  </li>
+    <li class="active"><a href="#"><span class="none"></span>Dependency Information</a>
+  </li>
+    <li><a href="dependency-management.html" title="Dependency Management"><span class="none"></span>Dependency Management</a>  </li>
+    <li><a href="distribution-management.html" title="Distribution Management"><span class="none"></span>Distribution Management</a>  </li>
+    <li><a href="index.html" title="About"><span class="none"></span>About</a>  </li>
+    <li><a href="issue-tracking.html" title="Issue Management"><span class="none"></span>Issue Management</a>  </li>
+    <li><a href="license.html" title="Licenses"><span class="none"></span>Licenses</a>  </li>
+    <li><a href="modules.html" title="Project Modules"><span class="none"></span>Project Modules</a>  </li>
+    <li><a href="plugin-management.html" title="Plugin Management"><span class="none"></span>Plugin Management</a>  </li>
+    <li><a href="plugins.html" title="Plugins"><span class="none"></span>Plugins</a>  </li>
+    <li><a href="team-list.html" title="Team"><span class="none"></span>Team</a>  </li>
+    <li><a href="source-repository.html" title="Source Code Management"><span class="none"></span>Source Code Management</a>  </li>
+    <li><a href="project-summary.html" title="Summary"><span class="none"></span>Summary</a>  </li>
+      </ul>
+  </li>
+    <li><a href="project-reports.html" title="Project Reports"><span class="icon-chevron-right"></span>Project Reports</a>  </li>
   </ul>
           <hr />
           <div id="poweredBy">
           <script type="text/javascript">asyncJs( 'https://apis.google.com/js/plusone.js' )</script>
-        <div class="g-plusone" data-href="https://github.com/ctron/kapua-gateway-client/kapua-gateway-client-spi" data-size="tall" ></div>
+        <div class="g-plusone" data-href="https://github.com/ctron/kapua-gateway-client" data-size="tall" ></div>
                   <div class="clear"></div>
-                  <iframe src="https://www.facebook.com/plugins/like.php?href=https://github.com/ctron/kapua-gateway-client/kapua-gateway-client-spi&send=false&layout=box_count&show-faces=false&action=like&colorscheme=light"
+                  <iframe src="https://www.facebook.com/plugins/like.php?href=https://github.com/ctron/kapua-gateway-client&send=false&layout=box_count&show-faces=false&action=like&colorscheme=light"
         scrolling="no" frameborder="0"
         style="border:none; width:48px; height:63px; margin-top: 10px;" ></iframe>
               <div class="clear"></div>
@@ -77,32 +97,32 @@
 <h3><a name="Apache_Maven"></a>Apache Maven</h3><a name="Apache_Maven"></a>
 <div class="source"><pre class="prettyprint">&lt;dependency&gt;
   &lt;groupId&gt;de.dentrassi.kapua&lt;/groupId&gt;
-  &lt;artifactId&gt;kapua-gateway-client-spi&lt;/artifactId&gt;
+  &lt;artifactId&gt;kapua-gateway-client&lt;/artifactId&gt;
   &lt;version&gt;0.2.0&lt;/version&gt;
-  &lt;type&gt;bundle&lt;/type&gt;
+  &lt;type&gt;pom&lt;/type&gt;
 &lt;/dependency&gt;</pre></div></div>
 <div class="section">
 <h3><a name="Apache_Buildr"></a>Apache Buildr</h3><a name="Apache_Buildr"></a>
-<div class="source"><pre class="prettyprint">'de.dentrassi.kapua:kapua-gateway-client-spi:bundle:0.2.0'</pre></div></div>
+<div class="source"><pre class="prettyprint">'de.dentrassi.kapua:kapua-gateway-client:pom:0.2.0'</pre></div></div>
 <div class="section">
 <h3><a name="Apache_Ivy"></a>Apache Ivy</h3><a name="Apache_Ivy"></a>
-<div class="source"><pre class="prettyprint">&lt;dependency org=&quot;de.dentrassi.kapua&quot; name=&quot;kapua-gateway-client-spi&quot; rev=&quot;0.2.0&quot;&gt;
-  &lt;artifact name=&quot;kapua-gateway-client-spi&quot; type=&quot;bundle&quot; /&gt;
+<div class="source"><pre class="prettyprint">&lt;dependency org=&quot;de.dentrassi.kapua&quot; name=&quot;kapua-gateway-client&quot; rev=&quot;0.2.0&quot;&gt;
+  &lt;artifact name=&quot;kapua-gateway-client&quot; type=&quot;pom&quot; /&gt;
 &lt;/dependency&gt;</pre></div></div>
 <div class="section">
 <h3><a name="Groovy_Grape"></a>Groovy Grape</h3><a name="Groovy_Grape"></a>
 <div class="source"><pre class="prettyprint">@Grapes(
-@Grab(group='de.dentrassi.kapua', module='kapua-gateway-client-spi', version='0.2.0')
+@Grab(group='de.dentrassi.kapua', module='kapua-gateway-client', version='0.2.0')
 )</pre></div></div>
 <div class="section">
 <h3><a name="GradleGrails"></a>Gradle/Grails</h3><a name="GradleGrails"></a>
-<div class="source"><pre class="prettyprint">compile 'de.dentrassi.kapua:kapua-gateway-client-spi:0.2.0'</pre></div></div>
+<div class="source"><pre class="prettyprint">compile 'de.dentrassi.kapua:kapua-gateway-client:0.2.0'</pre></div></div>
 <div class="section">
 <h3><a name="Scala_SBT"></a>Scala SBT</h3><a name="Scala_SBT"></a>
-<div class="source"><pre class="prettyprint">libraryDependencies += &quot;de.dentrassi.kapua&quot; % &quot;kapua-gateway-client-spi&quot; % &quot;0.2.0&quot;</pre></div></div>
+<div class="source"><pre class="prettyprint">libraryDependencies += &quot;de.dentrassi.kapua&quot; % &quot;kapua-gateway-client&quot; % &quot;0.2.0&quot;</pre></div></div>
 <div class="section">
 <h3><a name="Leiningen"></a>Leiningen</h3><a name="Leiningen"></a>
-<div class="source"><pre class="prettyprint">[de.dentrassi.kapua/kapua-gateway-client-spi &quot;0.2.0&quot;]</pre></div></div></div>
+<div class="source"><pre class="prettyprint">[de.dentrassi.kapua/kapua-gateway-client &quot;0.2.0&quot;]</pre></div></div></div>
         </div>
       </div>
     </div>
