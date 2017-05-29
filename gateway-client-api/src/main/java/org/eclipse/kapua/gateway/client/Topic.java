@@ -17,6 +17,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
+/**
+ * A topic
+ * <p>
+ * <b>Note:</b> This is not a technical MQTT topic, but an internal data topic.
+ * For this reason special topics like wildcards are not supported and will cause
+ * an {@link Exception}.
+ * </p>
+ */
 public final class Topic {
 
     private final List<String> segments;
@@ -68,8 +76,14 @@ public final class Topic {
         return true;
     }
 
-    public static Topic split(final String path) {
+    public static Topic split(String path) {
         if (path == null) {
+            return null;
+        }
+
+        path = path.replaceAll("(^/+|/$)+", "");
+
+        if (path.isEmpty()) {
             return null;
         }
 
@@ -81,7 +95,9 @@ public final class Topic {
             return null;
         }
 
-        return Topic.of(new ArrayList<>(segments));
+        segments.forEach(Topic::ensureNotSpecial);
+
+        return new Topic(new ArrayList<>(segments));
     }
 
     public static Topic of(final String first, final String... strings) {
@@ -102,7 +118,9 @@ public final class Topic {
     }
 
     public static String ensureNotSpecial(final String segment) {
-        if ("#".equals(segment)) {
+        if (segment == null || segment.isEmpty()) {
+            throw new IllegalArgumentException("Segment must not be null or empty");
+        } else if ("#".equals(segment)) {
             throw new IllegalArgumentException("Wildcard topics are not allowed");
         } else if ("+".equals(segment)) {
             throw new IllegalArgumentException("Wildcard topics are not allowed");
