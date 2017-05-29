@@ -30,7 +30,7 @@ public class NamespaceTest {
         new KuraNamespace.Builder().accountName("").build();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testSetAndGetAccount() {
         final Builder builder = new KuraNamespace.Builder().accountName("foo");
         assertEquals("foo", builder.accountName());
