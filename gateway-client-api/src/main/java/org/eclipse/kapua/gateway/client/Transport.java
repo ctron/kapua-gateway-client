@@ -14,6 +14,13 @@ package org.eclipse.kapua.gateway.client;
 import java.util.concurrent.Semaphore;
 import java.util.function.Consumer;
 
+/**
+ * A control interface on the underlying client transport
+ * <p>
+ * <b>Note:</b> There is only one set of transport events available for the client.
+ * Setting a new set of transport state listeners will clear the previously set listeners.
+ * </p>
+ */
 public interface Transport {
 
     public interface TransportEvents {
@@ -23,8 +30,47 @@ public interface Transport {
         public void disconnected(Runnable runnable);
     }
 
+    /**
+     * Set a state listener
+     * 
+     * <p>
+     * The listener will be called immediately after setting with the
+     * last known state.
+     * </p>
+     * 
+     * @param stateChange
+     *            the listener to transport state changes
+     */
     public void state(Consumer<Boolean> stateChange);
 
+    /**
+     * This method allows to atomically set a state listener using simple runnable.
+     * 
+     * <p>
+     * This method is intended to be used with Java lambdas where each state change
+     * (connected, disconnected) is mapped to one lambda. However, as the state change
+     * will be initially reported it might happen that the state actually changes between
+     * setting the connect and disconnect handler. This way there would be no way to properly
+     * report the initial state.
+     * </p>
+     * <p>
+     * Setting the event handlers using this methods works by updating
+     * the provided {@link TransportEvents} fields inside the provided consumer. The
+     * consumer will only be called once inside this method. The event listeners will
+     * then be set atomically.
+     * </p>
+     * 
+     * <pre>
+     * client.transport().events( events -> {
+     *   events.connected ( () -> System.out.println ("Connected") );
+     *   events.disconnected ( () -> System.out.println ("Disonnected") ); 
+     * });
+     * </pre>
+     * 
+     * @param events
+     *            code to update the {@link TransportEvents}
+     * 
+     */
     public default void events(final Consumer<TransportEvents> events) {
         class TransportEventsImpl implements TransportEvents {
 
@@ -49,13 +95,28 @@ public interface Transport {
 
         state(state -> {
             if (state) {
-                impl.connected.run();
+                if (impl.connected != null) {
+                    impl.connected.run();
+                }
             } else {
-                impl.disconnected.run();
+                if (impl.disconnected != null) {
+                    impl.disconnected.run();
+                }
             }
         });
     }
 
+    /**
+     * Wait for the connection to be established
+     * <p>
+     * <b>Note:</b> This method will reset the transport listeners.
+     * </p>
+     * 
+     * @param transport
+     *            to wait on
+     * @throws InterruptedException
+     *             if the wait got interrupted
+     */
     public static void waitForConnection(final Transport transport) throws InterruptedException {
 
         final Semaphore sem = new Semaphore(0);
