@@ -18,9 +18,9 @@ import java.util.Objects;
 
 import org.eclipse.kapua.gateway.client.BinaryPayloadCodec;
 import org.eclipse.kapua.gateway.client.Payload;
+import org.eclipse.kapua.gateway.client.kura.internal.Metrics;
 import org.eclipse.kapua.gateway.client.kura.payload.KuraPayloadProto;
 import org.eclipse.kapua.gateway.client.kura.payload.KuraPayloadProto.KuraPayload;
-import org.eclipse.kapua.gateway.client.kura.utils.Metrics;
 import org.eclipse.kapua.gateway.client.utils.Buffers;
 
 public class KuraBinaryPayloadCodec implements BinaryPayloadCodec {
