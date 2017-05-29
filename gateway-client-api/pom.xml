@@ -14,6 +14,7 @@
 	<artifactId>kapua-gateway-client-api</artifactId>
 	<packaging>bundle</packaging>
 	<name>Eclipse Kapua :: Gateway Client :: API</name>
+	<description>The gateway client API definition</description>
 
 	<dependencies>
 		<dependency>

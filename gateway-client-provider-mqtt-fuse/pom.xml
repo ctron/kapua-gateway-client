@@ -14,6 +14,7 @@
 	<artifactId>kapua-gateway-client-provider-mqtt-fuse</artifactId>
 	<packaging>bundle</packaging>
 	<name>Eclipse Kapua :: Gateway Client :: Provider :: MQTT :: FUSE</name>
+	<description>An MQTT client implementation based on FUSE MQTT</description>
 
 	<dependencies>
 

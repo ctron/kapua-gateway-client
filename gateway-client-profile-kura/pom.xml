@@ -15,6 +15,7 @@
 	<artifactId>kapua-gateway-client-profile-kura</artifactId>
 	<packaging>bundle</packaging>
 	<name>Eclipse Kapua :: Gateway Client :: Profile :: Eclipse Kura</name>
+	<description>The Eclipse Kura™ communication stack profile</description>
 
 	<properties>
 		<protobuf.version>2.6.1</protobuf.version>
