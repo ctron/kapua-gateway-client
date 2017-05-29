@@ -11,6 +11,9 @@
  *******************************************************************************/
 package org.eclipse.kapua.gateway.client.kura;
 
+import static java.util.Objects.requireNonNull;
+import static org.eclipse.kapua.gateway.client.Topic.ensureNotSpecial;
+
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -24,6 +27,9 @@ public class KuraNamespace implements MqttNamespace {
         private String accountName;
 
         public Builder accountName(final String accountName) {
+            requireNonNull(accountName);
+            ensureNotSpecial(accountName);
+
             this.accountName = accountName;
             return this;
         }
@@ -33,6 +39,10 @@ public class KuraNamespace implements MqttNamespace {
         }
 
         public KuraNamespace build() {
+            if (this.accountName == null || this.accountName.isEmpty()) {
+                throw new IllegalArgumentException("'accountName' must be set");
+            }
+
             return new KuraNamespace(this.accountName);
         }
     }
@@ -45,6 +55,9 @@ public class KuraNamespace implements MqttNamespace {
 
     @Override
     public String dataTopic(final String clientId, final String applicationId, final Topic topic) {
+        ensureNotSpecial(clientId);
+        ensureNotSpecial(applicationId);
+
         return Stream.concat(
                 Stream.of(
                         this.accountName,

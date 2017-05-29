@@ -13,7 +13,21 @@ package org.eclipse.kapua.gateway.client.mqtt;
 
 import org.eclipse.kapua.gateway.client.Topic;
 
+/**
+ * A namespace implementation for MQTT
+ */
 public interface MqttNamespace {
 
+    /**
+     * Render an MQTT topic for the provided data topic
+     * 
+     * @param clientId
+     *            The MQTT client ID
+     * @param applicationId
+     *            The application ID
+     * @param topic
+     *            The data topid
+     * @return The topic or {@code null} if no topic could be rendered for the provided input parameters
+     */
     public String dataTopic(String clientId, String applicationId, Topic topic);
 }

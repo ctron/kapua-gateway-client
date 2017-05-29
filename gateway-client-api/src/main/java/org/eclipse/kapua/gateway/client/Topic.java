@@ -76,6 +76,14 @@ public final class Topic {
         return new Topic(Arrays.asList(path.split("\\/+")));
     }
 
+    public static Topic of(final List<String> segments) {
+        if (segments == null || segments.isEmpty()) {
+            return null;
+        }
+
+        return Topic.of(new ArrayList<>(segments));
+    }
+
     public static Topic of(final String first, final String... strings) {
         if (first == null) {
             return null;
@@ -93,7 +101,7 @@ public final class Topic {
         return new Topic(segments);
     }
 
-    private static String ensureNotSpecial(final String segment) {
+    public static String ensureNotSpecial(final String segment) {
         if ("#".equals(segment)) {
             throw new IllegalArgumentException("Wildcard topics are not allowed");
         } else if ("+".equals(segment)) {
