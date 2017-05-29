@@ -137,14 +137,18 @@ public abstract class AbstractClient implements Client {
     }
 
     protected AbstractApplication internalBuildApplication(final Application.Builder builder, final String applicationId) {
-        final AbstractApplication result = internalCreateApplication(builder, applicationId);
-
         synchronized (this) {
+            if (applications.containsKey(applicationId)) {
+                throw new IllegalStateException(String.format("An application with the ID '%s' already exists", applicationId));
+            }
+
+            final AbstractApplication result = internalCreateApplication(builder, applicationId);
+
             this.applications.put(applicationId, result);
             notifyAddApplication(applicationId);
-        }
 
-        return result;
+            return result;
+        }
     }
 
     protected abstract AbstractApplication internalCreateApplication(final Application.Builder builder, final String applicationId);
