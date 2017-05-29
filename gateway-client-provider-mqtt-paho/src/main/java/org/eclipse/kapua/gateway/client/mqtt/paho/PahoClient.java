@@ -275,9 +275,14 @@ public class PahoClient extends MqttClient {
     }
 
     protected void handleMessageArrived(final String topic, final MqttMessage message) throws Exception {
+        final ByteBuffer buffer = Buffers.wrap(message.getPayload());
+        buffer.flip();
+
+        logger.debug("Received message - mqtt-topic: {}, payload: {}", topic, buffer);
+
         final MqttMessageHandler handler = this.subscriptions.get(topic);
         if (handler != null) {
-            handler.handleMessage(topic, Buffers.wrap(message.getPayload()));
+            handler.handleMessage(topic, buffer);
         }
     }
 
