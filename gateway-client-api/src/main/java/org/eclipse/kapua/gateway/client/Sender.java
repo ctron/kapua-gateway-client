@@ -15,6 +15,11 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Optional;
 
+/**
+ * An interface to publish data
+ * 
+ * @param <X> base class of sender errors
+ */
 public interface Sender<X extends Throwable> {
 
     public void send(Payload payload) throws X;

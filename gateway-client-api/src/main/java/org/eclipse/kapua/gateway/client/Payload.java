@@ -19,6 +19,9 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Payload data
+ */
 public class Payload {
 
     public static class Builder {
