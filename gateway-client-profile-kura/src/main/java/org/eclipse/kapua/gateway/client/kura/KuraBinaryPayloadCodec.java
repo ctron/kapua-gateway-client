@@ -14,6 +14,7 @@ package org.eclipse.kapua.gateway.client.kura;
 import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.util.Map;
+import java.util.Objects;
 
 import org.eclipse.kapua.gateway.client.BinaryPayloadCodec;
 import org.eclipse.kapua.gateway.client.Payload;
@@ -36,11 +37,15 @@ public class KuraBinaryPayloadCodec implements BinaryPayloadCodec {
 
     @Override
     public ByteBuffer encode(final Payload payload, final ByteBuffer buffer) throws Exception {
+
+        Objects.requireNonNull(payload);
+
         final KuraPayloadProto.KuraPayload.Builder builder = KuraPayload.newBuilder();
         builder.setTimestamp(payload.getTimestamp().toEpochMilli());
         Metrics.buildMetrics(builder, payload.getValues());
 
         final byte[] data = builder.build().toByteArray();
+
         if (buffer == null) {
             // create a wrapped buffer
             return Buffers.wrap(data);
@@ -59,6 +64,8 @@ public class KuraBinaryPayloadCodec implements BinaryPayloadCodec {
 
     @Override
     public Payload decode(final ByteBuffer buffer) throws Exception {
+        Objects.requireNonNull(buffer);
+
         final KuraPayload payload = KuraPayload.parseFrom(Buffers.toByteArray(buffer));
         final Map<String, Object> values = Metrics.extractMetrics(payload);
         return Payload.of(Instant.ofEpochMilli(payload.getTimestamp()), values);
