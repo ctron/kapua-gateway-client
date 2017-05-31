@@ -283,19 +283,24 @@
 <span class="sourceLineNo">275</span>    }<a name="line.275"></a>
 <span class="sourceLineNo">276</span><a name="line.276"></a>
 <span class="sourceLineNo">277</span>    protected void handleMessageArrived(final String topic, final MqttMessage message) throws Exception {<a name="line.277"></a>
-<span class="sourceLineNo">278</span>        final MqttMessageHandler handler = this.subscriptions.get(topic);<a name="line.278"></a>
-<span class="sourceLineNo">279</span>        if (handler != null) {<a name="line.279"></a>
-<span class="sourceLineNo">280</span>            handler.handleMessage(topic, Buffers.wrap(message.getPayload()));<a name="line.280"></a>
-<span class="sourceLineNo">281</span>        }<a name="line.281"></a>
-<span class="sourceLineNo">282</span>    }<a name="line.282"></a>
-<span class="sourceLineNo">283</span><a name="line.283"></a>
-<span class="sourceLineNo">284</span>    private CompletionStage&lt;?&gt; internalSubscribe(final String topic) throws MqttException {<a name="line.284"></a>
-<span class="sourceLineNo">285</span>        final CompletableFuture&lt;?&gt; future = new CompletableFuture&lt;&gt;();<a name="line.285"></a>
-<span class="sourceLineNo">286</span>        this.client.subscribe(topic, 1, null, Listeners.toListener(future));<a name="line.286"></a>
-<span class="sourceLineNo">287</span>        return future;<a name="line.287"></a>
-<span class="sourceLineNo">288</span>    }<a name="line.288"></a>
-<span class="sourceLineNo">289</span><a name="line.289"></a>
-<span class="sourceLineNo">290</span>}<a name="line.290"></a>
+<span class="sourceLineNo">278</span>        final ByteBuffer buffer = Buffers.wrap(message.getPayload());<a name="line.278"></a>
+<span class="sourceLineNo">279</span>        buffer.flip();<a name="line.279"></a>
+<span class="sourceLineNo">280</span><a name="line.280"></a>
+<span class="sourceLineNo">281</span>        logger.debug("Received message - mqtt-topic: {}, payload: {}", topic, buffer);<a name="line.281"></a>
+<span class="sourceLineNo">282</span><a name="line.282"></a>
+<span class="sourceLineNo">283</span>        final MqttMessageHandler handler = this.subscriptions.get(topic);<a name="line.283"></a>
+<span class="sourceLineNo">284</span>        if (handler != null) {<a name="line.284"></a>
+<span class="sourceLineNo">285</span>            handler.handleMessage(topic, buffer);<a name="line.285"></a>
+<span class="sourceLineNo">286</span>        }<a name="line.286"></a>
+<span class="sourceLineNo">287</span>    }<a name="line.287"></a>
+<span class="sourceLineNo">288</span><a name="line.288"></a>
+<span class="sourceLineNo">289</span>    private CompletionStage&lt;?&gt; internalSubscribe(final String topic) throws MqttException {<a name="line.289"></a>
+<span class="sourceLineNo">290</span>        final CompletableFuture&lt;?&gt; future = new CompletableFuture&lt;&gt;();<a name="line.290"></a>
+<span class="sourceLineNo">291</span>        this.client.subscribe(topic, 1, null, Listeners.toListener(future));<a name="line.291"></a>
+<span class="sourceLineNo">292</span>        return future;<a name="line.292"></a>
+<span class="sourceLineNo">293</span>    }<a name="line.293"></a>
+<span class="sourceLineNo">294</span><a name="line.294"></a>
+<span class="sourceLineNo">295</span>}<a name="line.295"></a>
 
 
 
