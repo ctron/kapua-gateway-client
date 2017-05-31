@@ -61,9 +61,9 @@ public interface Transport {
      * </p>
      * 
      * <pre>
-     * client.transport().events( events -> {
-     *   events.connected ( () -> System.out.println ("Connected") );
-     *   events.disconnected ( () -> System.out.println ("Disonnected") ); 
+     * client.transport().events( events {@code ->} {
+     *   events.connected ( () {@code ->} System.out.println ("Connected") );
+     *   events.disconnected ( () {@code ->} System.out.println ("Disconnected") ); 
      * });
      * </pre>
      * 

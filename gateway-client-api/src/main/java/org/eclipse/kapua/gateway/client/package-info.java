@@ -15,7 +15,7 @@ try (Client client = KuraMqttProfile.newProfile(FuseClient.Builder::new)
 
     // subscribe to a topic
 
-    application.data(Topic.of("my", "receiver")).subscribe(message -> {
+    application.data(Topic.of("my", "receiver")).subscribe(message {@code ->} {
       System.out.format("Received: %s%n", message);
     });
 
