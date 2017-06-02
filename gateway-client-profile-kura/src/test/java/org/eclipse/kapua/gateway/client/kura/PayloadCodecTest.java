@@ -23,7 +23,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class PayloadTest {
+public class PayloadCodecTest {
 
     private KuraBinaryPayloadCodec codec;
 
