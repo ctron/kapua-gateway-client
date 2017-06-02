@@ -25,11 +25,11 @@ public final class Errors {
         return IGNORE;
     }
 
-    public static ErrorHandler<RuntimeException> handle(BiConsumer<Throwable, Optional<Payload>> handler) {
+    public static ErrorHandler<RuntimeException> handle(final BiConsumer<Throwable, Optional<Payload>> handler) {
         return new ErrorHandler<RuntimeException>() {
 
             @Override
-            public void handleError(Throwable e, Optional<Payload> payload) throws RuntimeException {
+            public void handleError(final Throwable e, final Optional<Payload> payload) throws RuntimeException {
                 handler.accept(e, payload);
             }
         };
