@@ -44,7 +44,7 @@ public final class Credentials {
     }
 
     public static UserAndPassword userAndPassword(final String username, final String password) {
-        return new UserAndPassword(username, password.toCharArray());
+        return new UserAndPassword(username, password != null ? password.toCharArray() : null);
     }
 
     public static UserAndPassword userAndPassword(final String username, final char[] password) {
