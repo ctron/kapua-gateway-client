@@ -32,4 +32,20 @@ public class CredentialsTest {
         Assert.assertNull(c.getPassword());
         Assert.assertNull(c.getPasswordAsString());
     }
+    
+    @Test
+    public void testNonNull1() {
+        final UserAndPassword c = Credentials.userAndPassword("user", "password".toCharArray());
+        Assert.assertNotNull(c.getUsername());
+        Assert.assertNotNull(c.getPassword());
+        Assert.assertNotNull(c.getPasswordAsString());
+    }
+
+    @Test
+    public void testNonNull2() {
+        final UserAndPassword c = Credentials.userAndPassword("user", "password");
+        Assert.assertNotNull(c.getUsername());
+        Assert.assertNotNull(c.getPassword());
+        Assert.assertNotNull(c.getPasswordAsString());
+    }
 }
