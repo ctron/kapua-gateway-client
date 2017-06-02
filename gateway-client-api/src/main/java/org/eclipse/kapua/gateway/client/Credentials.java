@@ -35,6 +35,10 @@ public final class Credentials {
         }
 
         public String getPasswordAsString() {
+            if (password == null) {
+                return null;
+            }
+
             return String.valueOf(password);
         }
     }
