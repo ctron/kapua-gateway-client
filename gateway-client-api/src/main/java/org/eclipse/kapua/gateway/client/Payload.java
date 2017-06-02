@@ -18,6 +18,7 @@ import static java.util.Collections.unmodifiableMap;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Payload data
@@ -39,6 +40,8 @@ public class Payload {
         }
 
         public Builder timestamp(final Instant timestamp) {
+            Objects.requireNonNull(timestamp);
+
             this.timestamp = timestamp;
             return this;
         }
@@ -48,11 +51,15 @@ public class Payload {
         }
 
         public Builder values(final Map<String, Object> values) {
+            Objects.requireNonNull(values);
+
             this.values = values;
             return this;
         }
 
         public Builder put(final String key, final Object value) {
+            Objects.requireNonNull(key);
+
             this.values.put(key, value);
             return this;
         }
@@ -84,18 +91,28 @@ public class Payload {
     }
 
     public static Payload of(final String key, final Object value) {
+        Objects.requireNonNull(key);
+
         return new Payload(now(), singletonMap(key, value), false);
     }
 
     public static Payload of(final Map<String, Object> values) {
+        Objects.requireNonNull(values);
+
         return new Payload(now(), values, true);
     }
 
     public static Payload of(final Instant timestamp, final String key, final Object value) {
+        Objects.requireNonNull(timestamp);
+        Objects.requireNonNull(key);
+
         return new Payload(timestamp, singletonMap(key, value), false);
     }
 
     public static Payload of(final Instant timestamp, final Map<String, Object> values) {
+        Objects.requireNonNull(timestamp);
+        Objects.requireNonNull(values);
+
         return new Payload(timestamp, values, true);
     }
 }
