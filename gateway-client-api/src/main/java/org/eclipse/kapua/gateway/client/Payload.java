@@ -29,7 +29,7 @@ public class Payload {
 
         private Instant timestamp;
 
-        private Map<String, Object> values = new HashMap<>();
+        private Map<String, Object> values = new HashMap<String, Object>();
 
         public Builder() {
             this.timestamp = Instant.now();
@@ -46,14 +46,16 @@ public class Payload {
             return this;
         }
 
-        public Map<String, Object> values() {
+        public Map<String, ?> values() {
             return this.values;
         }
 
-        public Builder values(final Map<String, Object> values) {
+        public Builder values(final Map<String, ?> values) {
             Objects.requireNonNull(values);
 
-            this.values = values;
+            this.values.clear();
+            this.values.putAll(values);
+
             return this;
         }
 
@@ -70,9 +72,9 @@ public class Payload {
     }
 
     private final Instant timestamp;
-    private final Map<String, Object> values;
+    private final Map<String, ?> values;
 
-    private Payload(final Instant timestamp, final Map<String, Object> values, final boolean cloneValues) {
+    private Payload(final Instant timestamp, final Map<String, ?> values, final boolean cloneValues) {
         this.timestamp = timestamp;
         this.values = unmodifiableMap(cloneValues ? new HashMap<>(values) : values);
     }
@@ -81,7 +83,7 @@ public class Payload {
         return this.timestamp;
     }
 
-    public Map<String, Object> getValues() {
+    public Map<String, ?> getValues() {
         return this.values;
     }
 
@@ -96,7 +98,7 @@ public class Payload {
         return new Payload(now(), singletonMap(key, value), false);
     }
 
-    public static Payload of(final Map<String, Object> values) {
+    public static Payload of(final Map<String, ?> values) {
         Objects.requireNonNull(values);
 
         return new Payload(now(), values, true);
@@ -109,7 +111,7 @@ public class Payload {
         return new Payload(timestamp, singletonMap(key, value), false);
     }
 
-    public static Payload of(final Instant timestamp, final Map<String, Object> values) {
+    public static Payload of(final Instant timestamp, final Map<String, ?> values) {
         Objects.requireNonNull(timestamp);
         Objects.requireNonNull(values);
 
