@@ -91,14 +91,14 @@ public class KuraMqttProfile<B extends MqttClient.Builder<B>> {
     }
 
     private void validate() {
-        hasString(this.accountName, "accountName");
-        hasString(this.brokerUrl, "brokerUrl");
-        hasString(this.clientId, "clientId");
+        hasString("accountName", this.accountName);
+        hasString("brokerUrl", this.brokerUrl);
+        hasString("clientId", this.clientId);
     }
 
-    private static void hasString(final String value, final String name) {
+    private static void hasString(final String name, final String value) {
         if (value == null || value.isEmpty()) {
-            throw new IllegalStateException(String.format("'%s' must be set", value));
+            throw new IllegalStateException(String.format("'%s' must be set", name));
         }
     }
 }
