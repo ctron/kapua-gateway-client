@@ -21,11 +21,23 @@ The following quick steps should provide you with a working example.
   <artifactId>kapua-gateway-client-provider-mqtt-fuse</artifactId>
   <version><!-- replace with current version --></version>
 </dependency>
+<dependency>
+  <groupId>de.dentrassi.kapua</groupId>
+  <artifactId>kapua-gateway-client-profile-kura</artifactId>
+  <version><!-- replace with current version --></version>
+</dependency>
 ```
 
 ### Example client
 
 ```java
+
+import static org.eclipse.kapua.gateway.client.Credentials.userAndPassword;
+import static org.eclipse.kapua.gateway.client.Errors.ignore;
+
+import org.eclipse.kapua.gateway.client.mqtt.fuse.FuseClient;
+import org.eclipse.kapua.gateway.client.profile.kura.KuraMqttProfile;
+
 try (Client client = KuraMqttProfile.newProfile(FuseClient.Builder::new)
   .accountName("kapua-sys")
   .clientId("foo-bar-1")
