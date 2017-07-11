@@ -46,12 +46,12 @@ import org.slf4j.LoggerFactory;
 
 import de.dentrassi.kapua.smarthome.internal.Configuration;
 
+
 @Component(properties = "OSGI-INF/persistence.properties")
 @Designate(ocd = Configuration.class)
 public class PersistenceServiceImpl implements PersistenceService {
 
     private static final Logger logger = LoggerFactory.getLogger(PersistenceServiceImpl.class);
-
     private Client client;
     private Application app;
 
