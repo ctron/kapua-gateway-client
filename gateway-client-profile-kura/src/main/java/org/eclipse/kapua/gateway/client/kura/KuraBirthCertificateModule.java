@@ -157,7 +157,13 @@ public class KuraBirthCertificateModule implements Module {
             provider.provideData(values);
         }
 
-        values.put("application_ids", String.join(",", this.applications));
+        StringBuffer sb = new StringBuffer( "" );
+        String del = "";
+        for( String t: this.applications ){
+            sb.append(del).append( t );
+            del = ",";
+        }
+        values.put("application_ids", sb.toString());//String.join(",", this.applications));
 
         // build payload
 
