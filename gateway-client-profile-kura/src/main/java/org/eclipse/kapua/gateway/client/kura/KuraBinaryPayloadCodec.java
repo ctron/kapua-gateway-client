@@ -41,7 +41,7 @@ public class KuraBinaryPayloadCodec implements BinaryPayloadCodec {
         Objects.requireNonNull(payload);
 
         final KuraPayloadProto.KuraPayload.Builder builder = KuraPayload.newBuilder();
-        builder.setTimestamp(payload.getTimestamp().toEpochMilli());
+        builder.setTimestamp(payload.getTimestamp().getTime());
         Metrics.buildMetrics(builder, payload.getValues());
 
         final byte[] data = builder.build().toByteArray();
@@ -68,7 +68,7 @@ public class KuraBinaryPayloadCodec implements BinaryPayloadCodec {
 
         final KuraPayload payload = KuraPayload.parseFrom(Buffers.toByteArray(buffer));
         final Map<String, Object> values = Metrics.extractMetrics(payload);
-        return Payload.of(Instant.ofEpochMilli(payload.getTimestamp()), values);
+        return Payload.of(payload.getTimestamp()+"", values);
     }
 
 }

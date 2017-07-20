@@ -16,6 +16,7 @@ import static java.util.Collections.singletonMap;
 import static java.util.Collections.unmodifiableMap;
 
 import java.time.Instant;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -27,19 +28,20 @@ public class Payload {
 
     public static class Builder {
 
-        private Instant timestamp;
+       // private Instant timestamp;
+    	Date timestamp;
 
         private Map<String, Object> values = new HashMap<String, Object>();
 
         public Builder() {
-            this.timestamp = Instant.now();
+            this.timestamp = new Date();
         }
 
-        public Instant timestamp() {
+        public Date timestamp() {
             return this.timestamp;
         }
 
-        public Builder timestamp(final Instant timestamp) {
+        public Builder timestamp(final Date timestamp) {
             Objects.requireNonNull(timestamp);
 
             this.timestamp = timestamp;
@@ -71,15 +73,15 @@ public class Payload {
         }
     }
 
-    private final Instant timestamp;
+    private final Date timestamp;
     private final Map<String, ?> values;
 
-    private Payload(final Instant timestamp, final Map<String, ?> values, final boolean cloneValues) {
+    private Payload(final Date timestamp, final Map<String, ?> values, final boolean cloneValues) {
         this.timestamp = timestamp;
         this.values = unmodifiableMap(cloneValues ? new HashMap<>(values) : values);
     }
 
-    public Instant getTimestamp() {
+    public Date getTimestamp() {
         return this.timestamp;
     }
 
@@ -95,23 +97,23 @@ public class Payload {
     public static Payload of(final String key, final Object value) {
         Objects.requireNonNull(key);
 
-        return new Payload(now(), singletonMap(key, value), false);
+        return new Payload(new Date(), singletonMap(key, value), false);
     }
 
     public static Payload of(final Map<String, ?> values) {
         Objects.requireNonNull(values);
 
-        return new Payload(now(), values, true);
+        return new Payload(new Date(), values, true);
     }
 
-    public static Payload of(final Instant timestamp, final String key, final Object value) {
+    public static Payload of(final Date timestamp, final String key, final Object value) {
         Objects.requireNonNull(timestamp);
         Objects.requireNonNull(key);
 
         return new Payload(timestamp, singletonMap(key, value), false);
     }
 
-    public static Payload of(final Instant timestamp, final Map<String, ?> values) {
+    public static Payload of(final Date timestamp, final Map<String, ?> values) {
         Objects.requireNonNull(timestamp);
         Objects.requireNonNull(values);
 
